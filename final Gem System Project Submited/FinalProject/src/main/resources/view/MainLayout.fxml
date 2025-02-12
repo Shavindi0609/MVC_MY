@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="ancMain" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: e3e5ea;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ijse.gdse.finalproject.controller.MainLayoutController">
+   <children>
+      <Pane prefHeight="752.0" prefWidth="242.0" style="-fx-background-color: #163759;">
+         <children>
+            <Label layoutX="11.0" layoutY="109.0" prefHeight="37.0" prefWidth="220.0" style="-fx-background-color: gray;" text="     View" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="64.0" layoutY="23.0" text="Gem World" textFill="WHITE">
+               <font>
+                  <Font name="Cambria Bold Italic" size="29.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="32.0" fitWidth="35.0" layoutX="20.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+            </ImageView>
+            <VBox layoutX="43.0" layoutY="162.0" prefHeight="298.0" prefWidth="145.0">
+               <children>
+                  <Button fx:id="btnCustomer" mnemonicParsing="false" onAction="#customerOnAction" prefHeight="48.0" prefWidth="136.0" style="-fx-background-color: #163759;" text="Customer" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnGems" mnemonicParsing="false" onAction="#gemsOnAction" prefHeight="48.0" prefWidth="102.0" style="-fx-background-color: #163759;" text="Gems" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnEmployee" mnemonicParsing="false" onAction="#employeeOnAction" prefHeight="48.0" prefWidth="135.0" style="-fx-background-color: #163759;" text="Employee" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnSupplier" mnemonicParsing="false" onAction="#supplierOnAction" prefHeight="48.0" prefWidth="122.0" style="-fx-background-color: #163759;" text="Supplier" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <ImageView fitHeight="32.0" fitWidth="35.0" layoutX="104.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imgHome" fitHeight="24.0" fitWidth="24.0" layoutX="104.0" layoutY="714.0" onMouseClicked="#homeClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons8-home-100%20(2).png" />
+               </image>
+            </ImageView>
+         </children>
+         <effect>
+            <InnerShadow height="0.0" radius="0.0" width="0.0">
+               <color>
+                  <Color red="1.0" green="1.0" blue="1.0" />
+               </color>
+            </InnerShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Pane>
+      <AnchorPane fx:id="ancMainLayout" layoutX="242.0" layoutY="50.0" prefHeight="701.0" prefWidth="960.0" style="-fx-background-color: white;" />
+      <Text fill="#232481" layoutX="304.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shavindi">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Label layoutX="256.0" layoutY="12.0" textFill="#1536a4">
+         <font>
+            <Font name="Georgia" size="25.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="38.0" fitWidth="39.0" layoutX="256.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/icons8-user-48.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lblTime" layoutX="1112.0" layoutY="4.0" prefHeight="20.0" prefWidth="89.0" style="-fx-background-color: e3e5ea;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDate" layoutX="1111.0" layoutY="27.0" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: e3e5ea;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

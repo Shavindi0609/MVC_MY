@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ancSupplierPage" prefHeight="701.0" prefWidth="960.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ijse.gdse.finalproject.controller.SupplierController">
+   <children>
+      <Button layoutX="158.0" layoutY="647.0" mnemonicParsing="false" style="-fx-background-color: e19090;" text="Order Report">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnReset" layoutX="82.0" layoutY="335.0" mnemonicParsing="false" onAction="#resetOnAction" prefHeight="31.0" prefWidth="109.0" style="-fx-background-color: #678bb4;" text="reset">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnDelete" layoutX="286.0" layoutY="335.0" mnemonicParsing="false" onAction="#deleteOnAction" prefHeight="31.0" prefWidth="109.0" style="-fx-background-color: #678bb4;" text="Delete">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnUpdate" layoutX="503.0" layoutY="335.0" mnemonicParsing="false" onAction="#updateOnAtion" prefHeight="31.0" prefWidth="109.0" style="-fx-background-color: #678bb4;" text="Update">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnSave" layoutX="711.0" layoutY="335.0" mnemonicParsing="false" onAction="#saveOnAction" prefHeight="31.0" prefWidth="109.0" style="-fx-background-color: #678bb4;" text="Save">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button layoutX="341.0" layoutY="647.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="358.0" style="-fx-background-color: #678bb4;" text="Genarate All Supplierr Report">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <TableView fx:id="tblSupplier" layoutX="62.0" layoutY="391.0" onMouseClicked="#OnClickTable" prefHeight="245.0" prefWidth="834.0">
+         <columns>
+            <TableColumn fx:id="colSupplierId" prefWidth="96.00005948543549" text="Supplier Id" />
+            <TableColumn fx:id="colName" prefWidth="132.0" text="Name" />
+            <TableColumn fx:id="colNic" prefWidth="146.4000244140625" text="NIC" />
+            <TableColumn fx:id="colEmail" prefWidth="175.99996948242188" text="Email" />
+            <TableColumn fx:id="colPhone" prefWidth="142.4000244140625" text="Phone" />
+            <TableColumn fx:id="colAddress" prefWidth="143.99993896484375" text="Address" />
+         </columns>
+      </TableView>
+      <VBox layoutX="58.0" layoutY="48.0" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label text="Supplier Id">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Name">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="NIC">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Email">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Phone">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Address">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="248.0" layoutY="43.0" prefHeight="263.0" prefWidth="491.0">
+         <children>
+            <Label fx:id="lblSupplierId" text="1">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="txtName" prefHeight="26.0" prefWidth="333.0" promptText="Supplier" style="-fx-background-color: #fff; -fx-border-color: #7367F0; -fx-border-width: 0 0 1px 0;">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtNic" prefHeight="26.0" prefWidth="326.0" promptText="000000000000" style="-fx-background-color: #fff; -fx-border-color: #7367F0; -fx-border-width: 0 0 1px 0;">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtEmail" prefHeight="26.0" prefWidth="326.0" promptText="Supplier@gmail.com" style="-fx-background-color: #fff; -fx-border-color: #7367F0; -fx-border-width: 0 0 1px 0;">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtPhone" prefHeight="26.0" prefWidth="222.0" promptText="0777777777" style="-fx-background-color: #fff; -fx-border-color: #7367F0; -fx-border-width: 0 0 1px 0;">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txtAddress" prefHeight="26.0" prefWidth="385.0" promptText="Panadura" style="-fx-background-color: #fff; -fx-border-color: #7367F0; -fx-border-width: 0 0 1px 0;">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </TextField>
+         </children>
+      </VBox>
+      <Label fx:id="lblSupplierCount" layoutX="766.0" layoutY="14.0" prefHeight="20.0" prefWidth="165.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

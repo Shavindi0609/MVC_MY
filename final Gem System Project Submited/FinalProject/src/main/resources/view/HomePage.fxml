@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ancHome" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ijse.gdse.finalproject.controller.HomePageController">
+   <children>
+      <ImageView fitHeight="29.0" fitWidth="31.0" layoutX="701.0" layoutY="572.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="51.0" fitWidth="66.0" layoutX="14.0" layoutY="254.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lblDate" layoutX="1120.0" layoutY="41.0" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: white;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTime" layoutX="1120.0" layoutY="14.0" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: white;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="38.0" fitWidth="39.0" layoutX="260.0" layoutY="15.0" onMouseClicked="#GoProfile" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/icons8-user-48.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lblUsername" layoutX="304.0" layoutY="16.0" text="Shavindi">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Pane prefHeight="754.0" prefWidth="250.0" style="-fx-background-color: #163759;">
+         <children>
+            <Button fx:id="btnLogOut" layoutX="35.0" layoutY="694.0" mnemonicParsing="false" onAction="#logOutOnAction" prefHeight="40.0" prefWidth="151.0" style="-fx-background-color: #163759;" text="Log Out" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="32.0" fitWidth="35.0" layoutX="14.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="55.0" layoutY="27.0" text="Gem World" textFill="WHITE">
+               <font>
+                  <Font name="Cambria Bold Italic" size="29.0" />
+               </font>
+            </Label>
+            <Label layoutX="11.0" layoutY="97.0" prefHeight="37.0" prefWidth="220.0" style="-fx-background-color: gray;" text="    Dashboard" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <VBox layoutX="50.0" layoutY="178.0" prefHeight="349.0" prefWidth="171.0">
+               <children>
+                  <Button fx:id="btnAppointment" mnemonicParsing="false" onAction="#appointmentOnAction" prefHeight="46.0" prefWidth="187.0" style="-fx-background-color: #163759;" text="Appointment" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnOrders" mnemonicParsing="false" onAction="#ordersOnAction" prefHeight="48.0" prefWidth="110.0" style="-fx-background-color: #163759;" text="Orders" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnView" mnemonicParsing="false" onAction="#viewOnAction" prefHeight="46.0" prefWidth="94.0" style="-fx-background-color: #163759;" text="View" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnCategory" mnemonicParsing="false" onAction="#categoryOnAction" prefHeight="46.0" prefWidth="134.0" style="-fx-background-color: #163759;" text="Category" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnInventory" mnemonicParsing="false" onAction="#inventoryOnAction" prefHeight="46.0" prefWidth="118.0" style="-fx-background-color: #163759;" text="Supply" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <AnchorPane fx:id="ancMainLayout" layoutX="251.0" layoutY="61.0" prefHeight="691.0" prefWidth="824.0" style="-fx-background-color: e3e5ea;">
+         <children>
+            <Label fx:id="lblAppointmentStatus" layoutX="309.0" layoutY="14.0" prefHeight="51.0" prefWidth="392.0" style="-fx-background-color: e3e5ea;" textFill="#a61d1d">
+               <font>
+                  <Font name="Georgia" size="19.0" />
+               </font>
+            </Label>
+            <Pane layoutX="-1.0" layoutY="409.0" prefHeight="296.0" prefWidth="962.0" style="-fx-background-color: gray;">
+               <children>
+                  <ImageView fitHeight="162.0" fitWidth="220.0" layoutX="197.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="125.0" fitWidth="160.0" layoutX="554.0" layoutY="49.0">
+                     <image>
+                        <Image url="@../images/stone1.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="125.0" fitWidth="186.0" layoutX="677.0" layoutY="139.0">
+                     <image>
+                        <Image url="@../images/stone2.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="134.0" fitWidth="186.0" layoutX="736.0" layoutY="23.0">
+                     <image>
+                        <Image url="@../images/stone3.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="60.0" layoutY="111.0" text="Gem World  is designed to elevate the art of gemstone selling.">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="60.0" layoutY="141.0" text="Whether it’s dazzling sapphires, vibrant rubies, or">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="60.0" layoutY="176.0" text="sparkling topazes, our system simplifies inventory management and">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="184.0" layoutY="50.0" text="Gem World">
+                     <font>
+                        <Font name="System Bold" size="28.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="60.0" layoutY="212.0" text="enhances sales efficiency">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="293.0" layoutY="299.0" text="Today's balance =" textFill="#163759">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalSales" layoutX="505.0" layoutY="299.0" prefHeight="32.0" prefWidth="185.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Pane layoutX="-1.0" layoutY="77.0" prefHeight="200.0" prefWidth="962.0" style="-fx-background-color: #d1e1ef;">
+               <children>
+                  <Label fx:id="lblCustomerCount" layoutX="61.0" layoutY="77.0" prefHeight="32.0" prefWidth="212.0" style="-fx-background-color: #d1e1ef;">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblSupplierCount" layoutX="362.0" layoutY="77.0" prefHeight="32.0" prefWidth="202.0" style="-fx-background-color: #d1e1ef;">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblEmployeeCount" layoutX="675.0" layoutY="77.0" prefHeight="32.0" prefWidth="202.0" style="-fx-background-color: #d1e1ef;">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

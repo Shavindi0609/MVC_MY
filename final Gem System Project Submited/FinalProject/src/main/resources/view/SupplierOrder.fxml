@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="ancSupplierOrder" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: e3e5ea;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ijse.gdse.finalproject.controller.SupplierOrdersController">
+   <children>
+      <AnchorPane fx:id="ancSupplier" layoutX="250.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="950.0" style="-fx-background-color: e3e5ea;">
+         <children>
+            <Label layoutX="698.0" layoutY="17.0" text="Order Date">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblOrderDate" layoutX="821.0" layoutY="17.0" text="2025/10/01">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnAddStock" layoutX="640.0" layoutY="276.0" mnemonicParsing="false" onAction="#addStockOnAction" prefHeight="26.0" prefWidth="252.0" style="-fx-background-color: #678bb4;" text="Add Stock">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="103.0" layoutY="637.0" mnemonicParsing="false" onAction="#resetOnAction" prefHeight="31.0" prefWidth="286.0" style="-fx-background-color: ff4848;" text="reset">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnGetOrder" layoutX="594.0" layoutY="637.0" mnemonicParsing="false" onAction="#getOrderOnAction" prefHeight="26.0" prefWidth="286.0" style="-fx-background-color: #5ba965;" text="Get Order">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <TableView fx:id="tblSupplierOrder" layoutX="57.0" layoutY="332.0" prefHeight="241.0" prefWidth="835.0">
+               <columns>
+                  <TableColumn fx:id="colItemId" prefWidth="118.39999389648438" text="Gem Id" />
+                  <TableColumn fx:id="colName" prefWidth="132.00003051757812" text="Name" />
+                  <TableColumn fx:id="colUnitPrice" prefWidth="133.5999755859375" text="Unit Price" />
+                  <TableColumn fx:id="colTotal" prefWidth="164.0" text="Total" />
+                  <TableColumn fx:id="colAction" prefWidth="144.79998779296875" text="Action" />
+                  <TableColumn fx:id="colCartQty" prefWidth="144.0" text="Cart Quentity" />
+               </columns>
+            </TableView>
+            <Line endX="777.5999755859375" endY="-9.600006103515625" layoutX="115.0" layoutY="121.0" startX="-97.5999755859375" startY="-9.600006103515625" />
+            <Label fx:id="lblTotalAmount" layoutX="198.0" layoutY="595.0" prefHeight="18.0" prefWidth="120.0">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label fx:id="lblDeliveryDate" layoutX="595.0" layoutY="255.0" />
+            <VBox layoutX="77.0" layoutY="20.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Order Id">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Supplier Id">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Gem Id">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Qty on hand">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="QTY">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox layoutX="216.0" layoutY="28.0" prefHeight="264.0" prefWidth="134.0">
+               <children>
+                  <Label fx:id="lblOrderId" text="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="25.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="cmbSupplierId" onAction="#cmbSupplierIdOnAction" prefHeight="26.0" prefWidth="138.0">
+                     <VBox.margin>
+                        <Insets bottom="25.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="cmbGemId" onAction="#cmbGemIdOnAction" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets bottom="35.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <Label fx:id="lblGemQty" text="0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="35.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="txtAddToStockQty" />
+               </children>
+               <padding>
+                  <Insets bottom="30.0" />
+               </padding>
+            </VBox>
+            <Label layoutX="94.0" layoutY="590.0" text="Total Amount">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <VBox layoutX="803.0" layoutY="73.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="lblSupplierName" text="name">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="lblGemName" text="name">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="lblGemUnitPrice" text="0.00">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox layoutX="595.0" layoutY="80.0" prefHeight="200.0" prefWidth="145.0">
+               <children>
+                  <Label text="Supplier name">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Gem name">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Unit Price">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Label fx:id="lblTotalAmount1" layoutX="198.0" layoutY="586.0" prefHeight="26.0" prefWidth="146.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="361.0" layoutY="590.0" text="Method">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cmbPaymentmethod" layoutX="440.0" layoutY="587.0" prefWidth="150.0" />
+            <Label layoutX="665.0" layoutY="592.0" text="Payment Id">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblSupplierPaymentId" layoutX="750.0" layoutY="591.0" prefHeight="26.0" prefWidth="106.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Pane prefHeight="759.0" prefWidth="250.0" style="-fx-background-color: #163759;">
+         <children>
+            <ImageView fitHeight="46.0" fitWidth="42.0" layoutX="92.0" layoutY="622.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="sHome" fitHeight="24.0" fitWidth="24.0" layoutX="101.0" layoutY="716.0" onMouseClicked="#ClickHome" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons8-home-100%20(2).png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="35.0" layoutX="13.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="69.0" layoutY="38.0" text="Gem World" textFill="WHITE">
+               <font>
+                  <Font name="Cambria Bold Italic" size="29.0" />
+               </font>
+            </Label>
+            <Label layoutX="24.0" layoutY="119.0" prefHeight="37.0" prefWidth="203.0" style="-fx-background-color: gray;" text="   Supplier Orders" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="250.0" prefHeight="59.0" prefWidth="950.0" style="-fx-background-color: white;">
+         <children>
+            <Text fill="#232481" layoutX="59.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shavindi">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Label fx:id="lblTime" layoutX="861.0" layoutY="13.0" prefHeight="20.0" prefWidth="89.0" style="-fx-background-color: white;">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblDate" layoutX="861.0" layoutY="35.0" prefHeight="20.0" prefWidth="90.0" style="-fx-background-color: white;">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="39.0" layoutX="10.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons8-user-48.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio -->
+<jasperReport name="gem_report" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f6c4d90-3ecb-4a82-97a9-cff98a7dfc3a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gemstore"/>
+	<query language="SQL"><![CDATA[SELECT * FROM Gem]]></query>
+
+	<field name="gem_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gem_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="Gem ID"/>
+	</field>
+	<field name="gem_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gem_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="Gem Name"/>
+	</field>
+	<field name="gem_color" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gem_color"/>
+		<property name="com.jaspersoft.studio.field.label" value="Gem Color"/>
+	</field>
+	<field name="size" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="size"/>
+		<property name="com.jaspersoft.studio.field.label" value="Size (in carats)"/>
+	</field>
+	<field name="price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="price"/>
+		<property name="com.jaspersoft.studio.field.label" value="Price"/>
+	</field>
+	<field name="qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="Quantity"/>
+	</field>
+	<field name="is_certified" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="is_certified"/>
+		<property name="com.jaspersoft.studio.field.label" value="Certified"/>
+	</field>
+	<field name="category_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="category_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="Category ID"/>
+	</field>
+
+	<background splitType="Stretch"/>
+	<title height="86" splitType="Stretch">
+		<element kind="staticText" uuid="9fcbe3f2-9f6f-4af2-93a2-f00b739dc6d3" x="0" y="0" width="550" height="86" fontSize="25.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Gem Report]]></text>
+		</element>
+	</title>
+
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="37" splitType="Stretch">
+		<element kind="staticText" uuid="e8937509-d426-403f-aefe-be08cd0d4b60" x="0" y="0" width="111" height="30" fontSize="14.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Gem ID]]></text>
+		</element>
+		<element kind="staticText" uuid="35451192-1d19-4a0c-9cec-eedbff4486c1" x="111" y="0" width="111" height="30" fontSize="14.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Gem Name]]></text>
+		</element>
+		<element kind="staticText" uuid="6adc8db8-9dad-4519-b3b2-3778792f9117" x="222" y="0" width="111" height="30" fontSize="14.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Gem Color]]></text>
+		</element>
+		<element kind="staticText" uuid="807ed79b-87ab-4db1-990b-a7d3afdd77cd" x="333" y="0" width="111" height="30" fontSize="14.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Size]]></text>
+		</element>
+		<element kind="staticText" uuid="28b7c525-684d-44f6-aa8d-c4cd42ab503f" x="444" y="0" width="111" height="30" fontSize="14.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Price]]></text>
+		</element>
+	</columnHeader>
+
+	<detail>
+		<band height="34" splitType="Stretch">
+			<element kind="textField" uuid="fce8bbb2-3564-4ede-a341-b0e96c6bc24d" x="0" y="0" width="111" height="30" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{gem_id}]]></expression>
+			</element>
+			<element kind="textField" uuid="503f1b6b-3be7-4863-a8aa-827935ac4093" x="111" y="0" width="111" height="30" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{gem_name}]]></expression>
+			</element>
+			<element kind="textField" uuid="b6120738-ce58-4c4b-b8f7-5abff752b3d2" x="222" y="0" width="111" height="30" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{gem_color}]]></expression>
+			</element>
+			<element kind="textField" uuid="7599eede-49e1-436f-8646-5ea3070ff588" x="333" y="0" width="111" height="30" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{size}]]></expression>
+			</element>
+			<element kind="textField" uuid="7860981d-f5b8-412f-b7a4-b0b52408db42" x="444" y="0" width="111" height="30" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{price}]]></expression>
+			</element>
+		</band>
+	</detail>
+
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>
