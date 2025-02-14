@@ -1,11 +1,15 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.GemBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.GemDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
 import com.ijse.gdse.finalproject.dto.Gem2DTO;
 import com.ijse.gdse.finalproject.dto.GemDTO;
 import com.ijse.gdse.finalproject.dto.tm.Gem2TM;
 import com.ijse.gdse.finalproject.dto.tm.GemTM;
-import com.ijse.gdse.finalproject.model.GemModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.GemDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -81,6 +85,8 @@ public class GemsController implements Initializable {
     @FXML
     private TableColumn<Gem2TM, String> colCategoryName;
 
+    GemBO gemBO = (GemBO) BOFactory.getInstance().getBO(BOFactory.BOType.GEM);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colGemId.setCellValueFactory(new PropertyValueFactory<>("gem_id"));
@@ -125,10 +131,10 @@ public class GemsController implements Initializable {
     }
 
 
-    GemModel gemModel = new GemModel();
+
 
     private void loadTableData() throws SQLException {
-        ArrayList<GemDTO> gemDTOS = gemModel.getAllGems();
+        ArrayList<GemDTO> gemDTOS = gemBO.getAllGem();
 
         ObservableList<GemTM> gemTMS = FXCollections.observableArrayList();
         for (GemDTO gemDTO : gemDTOS) {
@@ -150,7 +156,7 @@ public class GemsController implements Initializable {
     }
 
     private void loadTable2Data() throws SQLException {
-        ArrayList<Gem2DTO> Gem2DTOS = GemModel.getAllCategory();
+        ArrayList<Gem2DTO> Gem2DTOS = gemBO.getAllCategory();
 
         ObservableList<Gem2TM> Gem2TMS = FXCollections.observableArrayList();
 
@@ -167,7 +173,7 @@ public class GemsController implements Initializable {
 
     public void loadNextGemId() throws SQLException {
 
-        String nextGemId = gemModel.getNextGemId();
+        String nextGemId = gemBO.getNextGemId();
         lblGemId.setText(nextGemId);
     }
 
@@ -248,7 +254,7 @@ public class GemsController implements Initializable {
                     category_id
             );
 
-            boolean isSaved = gemModel.saveGem(gemDTO);
+            boolean isSaved = gemBO.saveGem(gemDTO);
             if (isSaved) {
                 loadTableData();
                 refreshPage();
@@ -273,7 +279,7 @@ public class GemsController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = gemModel.deleteGem(gemId);
+            boolean isDeleted = gemBO.deleteGem(gemId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Gem deleted...!").show();
@@ -359,7 +365,7 @@ public class GemsController implements Initializable {
                     category_id
             );
 
-            boolean isSaved = gemModel.updateGem(gemDTO);
+            boolean isSaved = gemBO.updateGem(gemDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Gem saved...!").show();

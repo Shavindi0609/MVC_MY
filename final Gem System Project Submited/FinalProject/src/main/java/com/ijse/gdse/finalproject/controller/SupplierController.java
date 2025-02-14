@@ -1,9 +1,13 @@
 package com.ijse.gdse.finalproject.controller;
 
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.SupplierBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
 import com.ijse.gdse.finalproject.dto.SupplierDTO;
 import com.ijse.gdse.finalproject.dto.tm.SupplierTM;
-import com.ijse.gdse.finalproject.model.SupplierModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.SupplierDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,6 +60,9 @@ public class SupplierController implements Initializable {
 
     @FXML
     private TableView<SupplierTM> tblSupplier;
+
+    SupplierBO supplierBO = (SupplierBO) BOFactory.getInstance().getBO(BOFactory.BOType.SUPPLIER);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -76,7 +83,7 @@ public class SupplierController implements Initializable {
     }
 
     private void updateSupplierCount() throws SQLException {
-        int supplierCount = supplierModel.getSupplierCount();
+        int supplierCount = supplierBO.getSupplierCount();
         lblSupplierCount.setText("Supplier Count: " + supplierCount);
     }
 
@@ -98,10 +105,10 @@ public class SupplierController implements Initializable {
         txtAddress.setText("");
     }
 
-    SupplierModel supplierModel = new SupplierModel();
+
 
     private void loadSupplierTableData() throws SQLException {
-        ArrayList<SupplierDTO> supplierDTOS = supplierModel.getAllSuppliers();
+        ArrayList<SupplierDTO> supplierDTOS = supplierBO.getAllSupplier();
 
         ObservableList<SupplierTM> supplierTMS = FXCollections.observableArrayList();
 
@@ -120,7 +127,7 @@ public class SupplierController implements Initializable {
     }
 
         private void loadNextSupplierId() throws SQLException {
-            String nextSupplierId = supplierModel.getNextSupplierId();
+            String nextSupplierId = supplierBO.getNextSupplierId();
             lblSupplierId.setText(nextSupplierId);
         }
 
@@ -189,7 +196,7 @@ public class SupplierController implements Initializable {
                     address
             );
 
-            boolean isSaved = supplierModel.saveSupplier(supplierDTO);
+            boolean isSaved = supplierBO.saveSupplier(supplierDTO);
             if (isSaved) {
                 refreshPage();
                 updateSupplierCount();
@@ -281,7 +288,7 @@ public class SupplierController implements Initializable {
                     address
             );
 
-            boolean isSaved = supplierModel.updateSupplier(supplierDTO);
+            boolean isSaved = supplierBO.updateSupplier(supplierDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Supplier updated...!").show();
@@ -299,7 +306,7 @@ public class SupplierController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = supplierModel.deleteSuppler(supplierId);
+            boolean isDeleted = supplierBO.deleteSupplier(supplierId);
             if (isDeleted) {
                 refreshPage();
                 updateSupplierCount();

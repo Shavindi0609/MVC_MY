@@ -1,16 +1,17 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
+import com.ijse.gdse.finalproject.dao.custom.AppointmentDAO;
 import com.ijse.gdse.finalproject.dto.AppointmentDTO;
-import com.ijse.gdse.finalproject.dto.EmployeeDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AppointmentModel {
-    public ArrayList<AppointmentDTO> getAllAppointments() throws SQLException {
-        ResultSet rst = CrudUtil.execute("SELECT * FROM appointment");
+public class AppointmentDAOImpl implements AppointmentDAO {
+
+    public ArrayList<AppointmentDTO> getAll() throws SQLException {
+        ResultSet rst = SQLUtil.execute("SELECT * FROM appointment");
 
         ArrayList<AppointmentDTO> appointmentDTOS = new ArrayList<>();
 
@@ -27,8 +28,8 @@ public class AppointmentModel {
         return appointmentDTOS;
     }
 
-    public String getNextAppointmentId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("SELECT appointment_id FROM appointment ORDER BY appointment_id DESC LIMIT 1");
+    public String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("SELECT appointment_id FROM appointment ORDER BY appointment_id DESC LIMIT 1");
 
         if(rst.next()){
             String lastId = rst.getString(1);
@@ -40,8 +41,8 @@ public class AppointmentModel {
         return "APP001";
     }
 
-    public boolean addAppointment(AppointmentDTO appointmentDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean save(AppointmentDTO appointmentDTO) throws SQLException {
+        return SQLUtil.execute(
                 "insert into appointment(appointment_id , customer_id , date , time , is_attendance ) values (?,?,?,?,?)",
                 appointmentDTO.getAppointmentId(),
                 appointmentDTO.getCustomerId(),
@@ -52,12 +53,12 @@ public class AppointmentModel {
         );
     }
 
-    public boolean deleteAppointment(String appointmentId) throws SQLException {
-        return CrudUtil.execute("delete from appointment where appointment_id=?" , appointmentId);
+    public boolean delete(String appointmentId) throws SQLException {
+        return SQLUtil.execute("delete from appointment where appointment_id=?" , appointmentId);
     }
 
-    public boolean updateAppointment(AppointmentDTO appointmentDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean update(AppointmentDTO appointmentDTO) throws SQLException {
+        return SQLUtil.execute(
                 "UPDATE appointment SET customer_id=?, date=?, time=?, is_attendance=? WHERE appointment_id=?",
                 appointmentDTO.getCustomerId(),   // 1st ?
                 appointmentDTO.getDate(),         // 2nd ?

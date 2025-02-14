@@ -1,40 +1,40 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
+import com.ijse.gdse.finalproject.dao.custom.SupplierOrderDAO;
+import com.ijse.gdse.finalproject.dao.custom.SupplierOrderDetailsDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
 import com.ijse.gdse.finalproject.dto.SupplierOrderDTO;
-import com.ijse.gdse.finalproject.dto.SupplierOrderDetailsDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class SupplierOrderModel {
+public class SupplierOrderDAOImpl implements SupplierOrderDAO {
 
-    private final SupplierOrderDetailsModel supplierOrderDetailsModel = new SupplierOrderDetailsModel();
+     SupplierOrderDetailsDAO supplierOrderDetailsDAO = new SupplierOrderDetailsDAOImpl();
 
-    public String getNextSupplierOrderId() throws SQLException {
-        // @rst: ResultSet from the query fetching the last order ID from the orders table
-        ResultSet rst = CrudUtil.execute("select supplier_order_id from supplierorder order by supplier_order_id desc limit 1");
+    public String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select supplier_order_id from supplierorder order by supplier_order_id desc limit 1");
 
         if (rst.next()) {
-            // @lastId: Retrieves the last order ID
-            String lastId = rst.getString(1); // e.g., "O002"
-            // @substring: Extracts the numeric part from the order ID
-            String substring = lastId.substring(1); // e.g., "002"
-            // @i: Converts the numeric part to an integer
+            String lastId = rst.getString(1);
+            String substring = lastId.substring(1);
             int i = Integer.parseInt(substring); // 2
-            // @newIdIndex: Increments the numeric part by 1
             int newIdIndex = i + 1; // 3
-            // Returns the new order ID, formatted as "O" followed by a 3-digit number (e.g., O003)
             return String.format("S%03d", newIdIndex);
         }
-        // Returns "O001" if no previous orders are found
         return "S001";
     }
 
+    @Override
+    public ArrayList<SupplierOrderDTO> getAll() throws SQLException {
+        return null;
+    }
+
     public String getNextSupplierPaymentId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select supplier_payment_id from supplierpayment order by supplier_payment_id desc limit 1");
+        ResultSet rst = SQLUtil.execute("select supplier_payment_id from supplierpayment order by supplier_payment_id desc limit 1");
 
         if (rst.next()) {
             String lastId = rst.getString(1);
@@ -47,14 +47,14 @@ public class SupplierOrderModel {
         return "Y001";
     }
 
-    public boolean saveSupplierOrder(SupplierOrderDTO supplierOrderDTO) throws SQLException {
+    public boolean save(SupplierOrderDTO supplierOrderDTO) throws SQLException {
         System.out.println("clicked");
         Connection connection = DBConnection.getInstance().getConnection();
         connection.setAutoCommit(false); // Start transaction
 
         try {
             //save payment
-            boolean isPaymentSaved = CrudUtil.execute(
+            boolean isPaymentSaved = SQLUtil.execute(
                     "INSERT INTO supplierpayment (supplier_payment_id, method, total_amount) VALUES (?, ?, ?)",
                     supplierOrderDTO.getPaymentId(),
                     supplierOrderDTO.getMethod(),
@@ -66,7 +66,7 @@ public class SupplierOrderModel {
                 return false;
             }
             // Save the order
-            boolean isOrderSaved = CrudUtil.execute(
+            boolean isOrderSaved = SQLUtil.execute(
                     "INSERT INTO supplierorder (supplier_order_id, supplier_id, order_date, supplier_payment_id) VALUES (?, ?, ?, ?)",
                     supplierOrderDTO.getSupplierOrderId(),
                     supplierOrderDTO.getSupplierId(),
@@ -80,7 +80,7 @@ public class SupplierOrderModel {
             }
 
             // Save order details
-            boolean isSupplierOrderDetailListSaved = supplierOrderDetailsModel.saveSupplierOrderDetailsList(supplierOrderDTO.getSupplierOrderDetailsDTOS());
+            boolean isSupplierOrderDetailListSaved = supplierOrderDetailsDAO.saveSupplierOrderDetailsList(supplierOrderDTO.getSupplierOrderDetailsDTOS());
             if (!isSupplierOrderDetailListSaved) {
                 connection.rollback();
                 return false;
@@ -98,6 +98,16 @@ public class SupplierOrderModel {
         } finally {
             connection.setAutoCommit(true); // Restore auto-commit
         }
+    }
+
+    @Override
+    public boolean update(SupplierOrderDTO DTO) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String Id) throws SQLException {
+        return false;
     }
 
 

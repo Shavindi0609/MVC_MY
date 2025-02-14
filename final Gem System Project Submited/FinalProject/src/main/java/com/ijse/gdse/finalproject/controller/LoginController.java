@@ -1,8 +1,11 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.LoginBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.LoginDAO;
 import com.ijse.gdse.finalproject.dto.LoginDTO;
-import com.ijse.gdse.finalproject.model.LoginModel;
-import javafx.beans.Observable;
+import com.ijse.gdse.finalproject.dao.custom.impl.LoginDAOImpl;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +25,7 @@ public class LoginController {
     public AnchorPane ancLoginPage;
     public Button btnRegister;
 
-    LoginModel loginModel = new LoginModel();
+    LoginBO loginBO = (LoginBO) BOFactory.getInstance().getBO(BOFactory.BOType.LOGIN);
 
     public void initialize() {
         // Add listeners to both TextFields
@@ -34,7 +37,7 @@ public class LoginController {
         // If both fields are non-empty, try logging in
         if (!txtUserName.getText().isEmpty() && !txtPassword.getText().isEmpty()) {
             try {
-                ArrayList<LoginDTO> loginDTOS = loginModel.getAllIdAndPassword();
+                ArrayList<LoginDTO> loginDTOS = loginBO.getAllIdAndPassword();
 
                 for (LoginDTO loginDTO : loginDTOS) {
                     // Check if credentials are correct

@@ -1,10 +1,16 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
+import com.ijse.gdse.finalproject.bo.custom.UserBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
+import com.ijse.gdse.finalproject.dao.custom.UserDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
 import com.ijse.gdse.finalproject.dto.CustomerDTO;
 import com.ijse.gdse.finalproject.dto.tm.CustomerTM;
-import com.ijse.gdse.finalproject.model.CustomerModel;
-import com.ijse.gdse.finalproject.model.UserModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.CustomerDAOImpl;
+import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,7 +72,9 @@ public class CustomerController implements Initializable {
     @FXML
     private Label lblCustomerId;
 
-    UserModel userModel = new UserModel();
+    UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
+    CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -89,7 +97,7 @@ public class CustomerController implements Initializable {
     }
 
     private void updateCustomerCount() throws SQLException {
-        int customerCount = customerModel.getCustomerCount();
+        int customerCount = customerBO.getCustomerCount();
         lblCustomerCount.setText("Customer Count: " + customerCount);
     }
 
@@ -113,15 +121,14 @@ public class CustomerController implements Initializable {
     }
 
     private void loadUserIds() throws SQLException {
-        ArrayList<String> userIds = userModel.getAllUserIds();
+        ArrayList<String> userIds = userBO.getAllUserIds();
         cmbUserId.setItems(FXCollections.observableArrayList(userIds));
     }
 
-    CustomerModel customerModel = new CustomerModel();
 
 
     private void loadCustomerTableData() throws SQLException {
-        ArrayList<CustomerDTO> customerDTOS = customerModel.getAllCustomers();
+        ArrayList<CustomerDTO> customerDTOS = customerBO.getAllCustomer();
 
         ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList();
 
@@ -144,7 +151,7 @@ public class CustomerController implements Initializable {
     }
 
     public void loadNextCustomerId() throws SQLException {
-        String nextCustomerId = customerModel.getNextCustomerId();
+        String nextCustomerId = customerBO.getNextCustomerId();
         lblCustomerId.setText(nextCustomerId);
     }
 
@@ -218,7 +225,7 @@ public class CustomerController implements Initializable {
                     userId
             );
 
-            boolean isSaved = customerModel.saveCustomer(customerDTO);
+            boolean isSaved = customerBO.saveCustomer(customerDTO);
             if (isSaved) {
                 refreshPage();
                 updateCustomerCount();
@@ -255,7 +262,7 @@ public class CustomerController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = customerModel.deleteCustomer(customerId);
+            boolean isDeleted = customerBO.deleteCustomer(customerId);
             if (isDeleted) {
                 refreshPage();
                 updateCustomerCount();
@@ -328,7 +335,7 @@ public class CustomerController implements Initializable {
                     userId
             );
 
-            boolean isUpdate = customerModel.updateCustomer(customerDTO);
+            boolean isUpdate = customerBO.updateCustomer(customerDTO);
             if (isUpdate) {
                 refreshPage();
                 loadCustomerTableData();

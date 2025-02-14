@@ -1,9 +1,9 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
+import com.ijse.gdse.finalproject.dao.custom.EmployeeDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
-import com.ijse.gdse.finalproject.dto.CustomerDTO;
 import com.ijse.gdse.finalproject.dto.EmployeeDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +13,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class EmployeeModel {
-    public  String getNextEmployeeId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select employee_id from employee order by employee_id desc limit 1");
+public class EmployeeDAOImpl implements EmployeeDAO {
+
+    public  String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select employee_id from employee order by employee_id desc limit 1");
 
         if(rst.next()){
             String lastId = rst.getString(1);
@@ -27,9 +28,8 @@ public class EmployeeModel {
         return "E001";
     }
 
-
-    public boolean saveEmployee(EmployeeDTO employeeDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean save(EmployeeDTO employeeDTO) throws SQLException {
+        return SQLUtil.execute(
                 "insert into employee(employee_id , name , nic , email , phone , address,user_id) values (?,?,?,?,?,?,?)",
                 employeeDTO.getEmployeeId(),
                 employeeDTO.getName(),
@@ -41,8 +41,8 @@ public class EmployeeModel {
         );
     }
 
-    public ArrayList<EmployeeDTO> getAllEmployees() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from employee");
+    public ArrayList<EmployeeDTO> getAll() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select * from employee");
 
         ArrayList<EmployeeDTO> employeeDTOS = new ArrayList<>();
 
@@ -62,12 +62,12 @@ public class EmployeeModel {
         return employeeDTOS;
     }
 
-    public boolean deleteEmployee(String employeeId) throws SQLException {
-        return CrudUtil.execute("delete from employee where employee_id=?" , employeeId);
+    public boolean delete(String employeeId) throws SQLException {
+        return SQLUtil.execute("delete from employee where employee_id=?" , employeeId);
     }
 
-    public boolean updateEmployee(EmployeeDTO employeeDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean update(EmployeeDTO employeeDTO) throws SQLException {
+        return SQLUtil.execute(
                 "update employee set name=?, nic=?, email=?, phone=?, address=? , user_id=? where employee_id=?",
                 employeeDTO.getName(),
                 employeeDTO.getNic(),
@@ -78,9 +78,10 @@ public class EmployeeModel {
                 employeeDTO.getEmployeeId()
         );
     }
+
     public int getEmployeeCount() throws SQLException {
         String query = "SELECT COUNT(*) FROM employee";
-        ResultSet rst = CrudUtil.execute(query);
+        ResultSet rst = SQLUtil.execute(query);
         if (rst.next()) {
             return rst.getInt(1);
         }

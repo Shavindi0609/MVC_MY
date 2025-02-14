@@ -1,21 +1,26 @@
 package com.ijse.gdse.finalproject.controller;
 
-import com.ijse.gdse.finalproject.dto.tm.AppointmentTM;
-import com.ijse.gdse.finalproject.model.*;
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.AppointmentBO;
+import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
+import com.ijse.gdse.finalproject.bo.custom.EmployeeBO;
+import com.ijse.gdse.finalproject.bo.custom.HomePageBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.AppointmentDAO;
+import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
+import com.ijse.gdse.finalproject.dao.custom.EmployeeDAO;
+import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
+import com.ijse.gdse.finalproject.dao.custom.impl.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.sql.Date;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -40,17 +45,19 @@ public class HomePageController implements Initializable {
     public Label lblEmployeeCount;
     public Label lblCustomerCount;
 
-    EmployeeModel employeeModel = new EmployeeModel();
 
-    SupplierModel supplierModel = new SupplierModel();
 
-    CustomerModel customerModel = new CustomerModel();
 
+
+   HomePageBO homePageBO = (HomePageBO) BOFactory.getInstance().getBO(BOFactory.BOType.HOME);
+
+
+    //private final OrdersDAOImpl ordersModel = new OrdersDAOImpl();
 
     public static void setUsername(String username) {
         HomePageController.username = username;
     }
-    private final OrdersModel ordersModel = new OrdersModel();
+
 
     public void viewOnAction(ActionEvent actionEvent) throws IOException {
         AnchorPane load = FXMLLoader.load(getClass().getResource("/view/MainLayout.fxml"));
@@ -119,7 +126,7 @@ public class HomePageController implements Initializable {
 
     private void getCountss() {
         try {
-            int xx = employeeModel.getTotCount();
+            int xx = homePageBO.getTotCount();
             lblTotalSales.setText(""+xx+".00");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -127,11 +134,10 @@ public class HomePageController implements Initializable {
     }
 
     private void checkTodayAppointments() throws SQLException {
-        // Simulate appointment model call (replace with actual model logic)
-        AppointmentModel appointmentModel = new AppointmentModel();
+
         LocalDate today = LocalDate.now();
 
-        boolean hasAppointmentToday = appointmentModel.getAllAppointments()
+        boolean hasAppointmentToday = homePageBO.getAllAppointment()
                 .stream()
                 .anyMatch(appointment -> appointment.getDate().equals(today));
 
@@ -147,18 +153,18 @@ public class HomePageController implements Initializable {
     }
 
     private void setCustomerCount() throws SQLException {
-        int customerCount = customerModel.getCustomerCount();
+        int customerCount = homePageBO.getCustomerCount();
         lblCustomerCount.setText("Total Customers: " + customerCount);
 
     }
 
     private void setEmployeeCount() throws SQLException {
-        int employeeCount = employeeModel.getEmployeeCount();
+        int employeeCount = homePageBO.getEmployeeCount();
         lblEmployeeCount.setText("Total Employees: " + employeeCount);
     }
 
     private void setSupplierCount() throws SQLException {
-        int supplierCount = supplierModel.getSupplierCount();
+        int supplierCount = homePageBO.getSupplierCount();
         lblSupplierCount.setText("Total Suppliers: " + supplierCount);
     }
 

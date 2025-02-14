@@ -1,15 +1,17 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
+import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
 import com.ijse.gdse.finalproject.dto.SupplierDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class SupplierModel {
-    public ArrayList<SupplierDTO> getAllSuppliers() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from supplier");
+public class SupplierDAOImpl implements SupplierDAO {
+
+    public ArrayList<SupplierDTO> getAll() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select * from supplier");
 
         ArrayList<SupplierDTO> supplierDTOS = new ArrayList<>();
 
@@ -27,10 +29,8 @@ public class SupplierModel {
         return supplierDTOS;
     }
 
-
-
-    public String getNextSupplierId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select supplier_id from supplier order by supplier_id desc limit 1");
+    public String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select supplier_id from supplier order by supplier_id desc limit 1");
 
         if(rst.next()){
             String lastId = rst.getString(1);
@@ -42,8 +42,8 @@ public class SupplierModel {
         return "S001";
     }
 
-    public boolean saveSupplier(SupplierDTO supplierDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean save(SupplierDTO supplierDTO) throws SQLException {
+        return SQLUtil.execute(
                 "insert into supplier(supplier_id,name,nic,email,phone,address) values (?,?,?,?,?,?)",
                 supplierDTO.getSupplierId(),
                 supplierDTO.getName(),
@@ -54,8 +54,8 @@ public class SupplierModel {
         );
     }
 
-    public boolean updateSupplier(SupplierDTO supplierDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean update(SupplierDTO supplierDTO) throws SQLException {
+        return SQLUtil.execute(
                 "update supplier set name=?, nic=?, email=?, phone=?, address=? where supplier_id=?",
                 supplierDTO.getName(),
                 supplierDTO.getNic(),
@@ -66,12 +66,12 @@ public class SupplierModel {
         );
     }
 
-    public boolean deleteSuppler(String supplierId) throws SQLException {
-        return CrudUtil.execute("delete from supplier where supplier_id = ?" , supplierId);
+    public boolean delete(String supplierId) throws SQLException {
+        return SQLUtil.execute("delete from supplier where supplier_id = ?" , supplierId);
     }
 
     public ArrayList<String> getAllSupplierIds() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select supplier_id from supplier");
+        ResultSet rst = SQLUtil.execute("select supplier_id from supplier");
 
         ArrayList<String> supplierIds = new ArrayList<>();
 
@@ -83,7 +83,7 @@ public class SupplierModel {
     }
 
     public SupplierDTO findById(String selectedSupplierId) throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from supplier where supplier_id=?", selectedSupplierId);
+        ResultSet rst = SQLUtil.execute("select * from supplier where supplier_id=?", selectedSupplierId);
 
         if (rst.next()) {
             return new SupplierDTO(
@@ -100,7 +100,7 @@ public class SupplierModel {
 
     public int getSupplierCount() throws SQLException {
         String query = "SELECT COUNT(*) FROM supplier";
-        ResultSet rst = CrudUtil.execute(query);
+        ResultSet rst = SQLUtil.execute(query);
         if (rst.next()) {
             return rst.getInt(1);
         }

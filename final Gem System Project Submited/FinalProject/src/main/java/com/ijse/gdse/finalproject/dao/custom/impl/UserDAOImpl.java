@@ -1,16 +1,16 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
-import com.ijse.gdse.finalproject.dto.EmployeeDTO;
+import com.ijse.gdse.finalproject.dao.custom.UserDAO;
 import com.ijse.gdse.finalproject.dto.UserDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class UserModel {
-    public String getNextUserId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select user_id from user order by user_id desc limit 1");
+public class UserDAOImpl implements UserDAO {
+    public String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select user_id from user order by user_id desc limit 1");
 
         if(rst.next()){
             String lastId = rst.getString(1);
@@ -22,8 +22,8 @@ public class UserModel {
         return "U001";
     }
 
-    public ArrayList<UserDTO> getAllusers() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from user");
+    public ArrayList<UserDTO> getAll() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select * from user");
 
         ArrayList<UserDTO> userDTOS = new ArrayList<>();
 
@@ -40,8 +40,8 @@ public class UserModel {
         return userDTOS;
     }
 
-    public boolean saveUser(UserDTO userDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean save(UserDTO userDTO) throws SQLException {
+        return SQLUtil.execute(
                 "insert into user(user_id,user_name,role,password) values (?,?,?,?)",
                 userDTO.getUserId(),
                 userDTO.getUsername(),
@@ -50,8 +50,18 @@ public class UserModel {
         );
     }
 
+    @Override
+    public boolean update(UserDTO DTO) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String Id) throws SQLException {
+        return false;
+    }
+
     public UserDTO getUserDetails(String username) throws SQLException {
-        ResultSet rst = CrudUtil.execute("SELECT * FROM user WHERE user_name = ?", username);
+        ResultSet rst = SQLUtil.execute("SELECT * FROM user WHERE user_name = ?", username);
         UserDTO userDTO = new UserDTO();
         try {
 
@@ -73,7 +83,7 @@ public class UserModel {
     }
 
     public ArrayList<String> getAllUserIds() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select user_id from user");
+        ResultSet rst = SQLUtil.execute("select user_id from user");
         ArrayList<String> userIds = new ArrayList<>();
         while (rst.next()) {
             userIds.add(rst.getString(1));

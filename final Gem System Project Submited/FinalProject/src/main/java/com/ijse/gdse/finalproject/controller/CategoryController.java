@@ -1,10 +1,13 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.CategoryBO;
+import com.ijse.gdse.finalproject.bo.custom.impl.CategoryBOImpl;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.CategoryDAO;
 import com.ijse.gdse.finalproject.dto.CategoryDTO;
-import com.ijse.gdse.finalproject.dto.CustomerDTO;
 import com.ijse.gdse.finalproject.dto.tm.CategoryTM;
-import com.ijse.gdse.finalproject.dto.tm.CustomerTM;
-import com.ijse.gdse.finalproject.model.CategoryModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.CategoryDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,6 +48,8 @@ public class CategoryController implements Initializable {
     @FXML
     private TableColumn<CategoryTM, String> colCategoryName;
 
+   CategoryBO categoryBO = (CategoryBO) BOFactory.getInstance().getBO(BOFactory.BOType.CATEGORY);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -77,10 +82,10 @@ public class CategoryController implements Initializable {
 
     }
 
-    CategoryModel categoryModel = new CategoryModel();
+
 
     private void loadCategoryTableData() throws SQLException {
-        ArrayList<CategoryDTO> categoryDTOS = categoryModel.getAllCategory();
+        ArrayList<CategoryDTO> categoryDTOS = categoryBO.getAllCategory();
 
         ObservableList<CategoryTM> categoryTMS = FXCollections.observableArrayList();
 
@@ -98,7 +103,7 @@ public class CategoryController implements Initializable {
     }
 
     private void loadNextCategoryId() throws SQLException {
-        String nextCategoryId = categoryModel.getNextCategoryId();
+        String nextCategoryId = categoryBO.getNextCategoryId();
         lblCategoryId.setText(nextCategoryId);
     }
 
@@ -125,7 +130,7 @@ public class CategoryController implements Initializable {
                     categoryName
             );
 
-            boolean isSaved = categoryModel.saveCategory(categoryDTO);
+            boolean isSaved = categoryBO.saveCategory(categoryDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Category saved...!").show();
@@ -157,7 +162,7 @@ public class CategoryController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = categoryModel.deleteCategory(categoryId);
+            boolean isDeleted = categoryBO.deleteCategory(categoryId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Category deleted...!").show();
@@ -190,7 +195,7 @@ public class CategoryController implements Initializable {
                     categoryName
             );
 
-            boolean isUpdate = categoryModel.updateCategory(categoryDTO);
+            boolean isUpdate = categoryBO.updateCategory(categoryDTO);
             if (isUpdate) {
                 refreshPage();
                 loadCategoryTableData();

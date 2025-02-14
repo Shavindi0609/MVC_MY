@@ -1,10 +1,13 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.AppointmentBO;
+import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.AppointmentDAO;
 import com.ijse.gdse.finalproject.dto.AppointmentDTO;
-import com.ijse.gdse.finalproject.dto.CustomerDTO;
 import com.ijse.gdse.finalproject.dto.tm.AppointmentTM;
-import com.ijse.gdse.finalproject.dto.tm.CustomerTM;
-import com.ijse.gdse.finalproject.model.AppointmentModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.AppointmentDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import lombok.Setter;
 
 import javax.swing.text.html.ImageView;
 import java.io.IOException;
@@ -65,6 +67,7 @@ public class AppointmentController implements Initializable {
     private ImageView imgHome;
 
 
+    AppointmentBO appointmentBO = (AppointmentBO) BOFactory.getInstance().getBO(BOFactory.BOType.APPOINTMENT);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,7 +86,7 @@ public class AppointmentController implements Initializable {
         try {
             // Check if there are appointments for today
             LocalDate today = LocalDate.now();
-            ArrayList<AppointmentDTO> appointments = appointmentModel.getAllAppointments();
+            ArrayList<AppointmentDTO> appointments = appointmentBO.getAllAppointment();
             boolean hasAppointmentToday = appointments.stream()
                     .anyMatch(appointment -> appointment.getDate().equals(today));
 
@@ -122,10 +125,9 @@ public class AppointmentController implements Initializable {
         txtIsAttendance.setText("");
     }
 
-    AppointmentModel appointmentModel = new AppointmentModel();
 
     private void loadAppointmentTableData() throws SQLException {
-        ArrayList<AppointmentDTO> appointmentDTOS = appointmentModel.getAllAppointments();
+        ArrayList<AppointmentDTO> appointmentDTOS = appointmentBO.getAllAppointment();
 
         ObservableList<AppointmentTM> appointmentTMS = FXCollections.observableArrayList();
 
@@ -144,7 +146,7 @@ public class AppointmentController implements Initializable {
     }
 
     private void loadNextAppointmentId() throws SQLException {
-        String nextAppointmentId = appointmentModel.getNextAppointmentId();
+        String nextAppointmentId = appointmentBO.getNextAppointmentId();
         lblAppointmentId.setText(nextAppointmentId);
     }
 
@@ -197,7 +199,7 @@ public class AppointmentController implements Initializable {
 
             );
 
-            boolean isSaved = appointmentModel.addAppointment(appointmentDTO);
+            boolean isSaved = appointmentBO.saveAppointment(appointmentDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Appointment added...!").show();
@@ -215,7 +217,7 @@ public class AppointmentController implements Initializable {
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
 
-            boolean isDeleted = appointmentModel.deleteAppointment(appointmentId);
+            boolean isDeleted = appointmentBO.deleteAppointment(appointmentId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Appointment deleted...!").show();
@@ -280,7 +282,7 @@ public class AppointmentController implements Initializable {
 
             );
 
-            boolean isSaved = appointmentModel.updateAppointment(appointmentDTO);
+            boolean isSaved = appointmentBO.updateAppointment(appointmentDTO);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Appointment updated...!").show();

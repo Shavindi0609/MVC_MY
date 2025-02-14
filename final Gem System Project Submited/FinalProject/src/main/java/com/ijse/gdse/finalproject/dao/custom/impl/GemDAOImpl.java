@@ -1,18 +1,20 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
+import com.ijse.gdse.finalproject.dao.custom.GemDAO;
 import com.ijse.gdse.finalproject.dto.Gem2DTO;
 import com.ijse.gdse.finalproject.dto.GemDTO;
 import com.ijse.gdse.finalproject.dto.OrderDetailsDTO;
 import com.ijse.gdse.finalproject.dto.SupplierOrderDetailsDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GemModel {
-    public static ArrayList<Gem2DTO> getAllCategory() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from category");
+public class GemDAOImpl implements GemDAO {
+
+    public ArrayList<Gem2DTO> getAllCategory() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select * from category");
 
         ArrayList<Gem2DTO> Gem2DTOS = new ArrayList<>();
 
@@ -27,8 +29,8 @@ public class GemModel {
         return Gem2DTOS;
     }
 
-    public String getNextGemId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select gem_id from gem order by gem_id desc limit 1");
+    public String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select gem_id from gem order by gem_id desc limit 1");
 
         if (rst.next()) {
             String lastId = rst.getString(1); // Last customer ID
@@ -40,8 +42,8 @@ public class GemModel {
         return "G001"; // Return the default customer ID if no data is found
     }
 
-    public boolean saveGem(GemDTO gemDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean save(GemDTO gemDTO) throws SQLException {
+        return SQLUtil.execute(
                 "INSERT INTO gem (gem_id, gem_name, gem_color, size, price, qty, is_certified,category_id) VALUES (?,?,?,?,?,?,?,?)",
                 gemDTO.getGem_id(),
                 gemDTO.getGem_name(),
@@ -54,9 +56,8 @@ public class GemModel {
         );
     }
 
-
-    public ArrayList<GemDTO> getAllGems() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from gem");
+    public ArrayList<GemDTO> getAll() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select * from gem");
 
         ArrayList<GemDTO> gemDTOS = new ArrayList<>();
 
@@ -76,12 +77,12 @@ public class GemModel {
         return gemDTOS;
     }
 
-    public boolean deleteGem(String gemId) throws SQLException {
-        return CrudUtil.execute("delete from gem where gem_id=?", gemId);
+    public boolean delete(String gemId) throws SQLException {
+        return SQLUtil.execute("delete from gem where gem_id=?", gemId);
     }
 
-    public boolean updateGem(GemDTO gemDTO) throws SQLException {
-        return CrudUtil.execute(
+    public boolean update(GemDTO gemDTO) throws SQLException {
+        return SQLUtil.execute(
                 "update gem set gem_name=?, gem_color=?, size=?, price=?, qty=? , is_certified=? , category_id=? where gem_id=?",
                 gemDTO.getGem_name(),
                 gemDTO.getGem_color(),
@@ -95,7 +96,7 @@ public class GemModel {
     }
 
     public ArrayList<String> getAllGemIds() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select gem_id from gem");
+        ResultSet rst = SQLUtil.execute("select gem_id from gem");
         ArrayList<String> gemIds = new ArrayList<>();
         while (rst.next()) {
             gemIds.add(rst.getString(1));
@@ -104,7 +105,7 @@ public class GemModel {
     }
 
     public GemDTO findById(String selectedItemId) throws SQLException {
-        ResultSet rst = CrudUtil.execute("select * from gem where gem_id=?", selectedItemId);
+        ResultSet rst = SQLUtil.execute("select * from gem where gem_id=?", selectedItemId);
         if (rst.next()) {
             return new GemDTO(
                     rst.getString(1),
@@ -121,7 +122,7 @@ public class GemModel {
     }
 
     public boolean reduceQty(OrderDetailsDTO orderDetailsDTO) throws SQLException {
-        return CrudUtil.execute(
+        return SQLUtil.execute(
                 "update gem set qty = qty - ? where gem_id = ?",
                 orderDetailsDTO.getQuantity(),
                 orderDetailsDTO.getGemId()
@@ -129,7 +130,7 @@ public class GemModel {
     }
 
     public boolean reduceeQty(SupplierOrderDetailsDTO supplierOrderDetailsDTO) throws SQLException {
-        return CrudUtil.execute(
+        return SQLUtil.execute(
                 "update gem set qty = qty + ? where gem_id = ?",
                 supplierOrderDetailsDTO.getQuantity(),
                 supplierOrderDetailsDTO.getGemId()

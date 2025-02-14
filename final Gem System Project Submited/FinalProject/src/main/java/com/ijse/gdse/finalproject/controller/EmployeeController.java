@@ -1,9 +1,15 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.EmployeeBO;
+import com.ijse.gdse.finalproject.bo.custom.UserBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.EmployeeDAO;
+import com.ijse.gdse.finalproject.dao.custom.UserDAO;
 import com.ijse.gdse.finalproject.dto.EmployeeDTO;
 import com.ijse.gdse.finalproject.dto.tm.EmployeeTM;
-import com.ijse.gdse.finalproject.model.EmployeeModel;
-import com.ijse.gdse.finalproject.model.UserModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.EmployeeDAOImpl;
+import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,8 +41,8 @@ public class EmployeeController implements Initializable {
     @FXML
     private TableView<EmployeeTM> tblEmployee;
 
-    private final UserModel userModel = new UserModel();
-    private final EmployeeModel employeeModel = new EmployeeModel();
+    UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOType.EMPLOYEE);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,7 +64,7 @@ public class EmployeeController implements Initializable {
     }
 
     private void updateEmployeeCount() throws SQLException {
-        int employeeCount = employeeModel.getEmployeeCount();
+        int employeeCount = employeeBO.getEmployeeCount();
         lblEmployeeCount.setText("Employee Count: " + employeeCount);
     }
 
@@ -74,12 +80,12 @@ public class EmployeeController implements Initializable {
     }
 
     private void loadUserIds() throws SQLException {
-        ArrayList<String> userIds = userModel.getAllUserIds();
+        ArrayList<String> userIds = userBO.getAllUserIds();
         cmbUserId.setItems(FXCollections.observableArrayList(userIds));
     }
 
     private void loadEmployeeTableData() throws SQLException {
-        ArrayList<EmployeeDTO> employeeDTOS = employeeModel.getAllEmployees();
+        ArrayList<EmployeeDTO> employeeDTOS = employeeBO.getAllEmployee();
         ObservableList<EmployeeTM> employeeTMS = FXCollections.observableArrayList();
 
         for (EmployeeDTO employeeDTO : employeeDTOS) {
@@ -98,7 +104,7 @@ public class EmployeeController implements Initializable {
     }
 
     private void loadNextEmployeeId() throws SQLException {
-        String nextEmployeeId = employeeModel.getNextEmployeeId();
+        String nextEmployeeId = employeeBO.getNextEmployeeId();
         lblEmployeeId.setText(nextEmployeeId);
     }
 
@@ -127,7 +133,7 @@ public class EmployeeController implements Initializable {
                 selectedUserId
         );
 
-        boolean isSaved = employeeModel.saveEmployee(employeeDTO);
+        boolean isSaved = employeeBO.saveEmployee(employeeDTO);
         if (isSaved) {
             refreshPage();
             new Alert(Alert.AlertType.INFORMATION, "Employee saved successfully!").show();
@@ -152,7 +158,7 @@ public class EmployeeController implements Initializable {
                 selectedUserId
         );
 
-        boolean isUpdated = employeeModel.updateEmployee(employeeDTO);
+        boolean isUpdated = employeeBO.updateEmployee(employeeDTO);
         if (isUpdated) {
             refreshPage();
             new Alert(Alert.AlertType.INFORMATION, "Employee updated successfully!").show();
@@ -168,7 +174,7 @@ public class EmployeeController implements Initializable {
         Optional<ButtonType> optionalButtonType = alert.showAndWait();
 
         if (optionalButtonType.isPresent() && optionalButtonType.get() == ButtonType.YES) {
-            boolean isDeleted = employeeModel.deleteEmployee(employeeId);
+            boolean isDeleted = employeeBO.deleteEmployee(employeeId);
             if (isDeleted) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Employee deleted successfully!").show();

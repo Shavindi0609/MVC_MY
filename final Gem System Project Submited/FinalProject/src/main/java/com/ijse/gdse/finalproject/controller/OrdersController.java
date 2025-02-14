@@ -1,11 +1,18 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
+import com.ijse.gdse.finalproject.bo.custom.GemBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
+import com.ijse.gdse.finalproject.dao.custom.GemDAO;
+import com.ijse.gdse.finalproject.dao.custom.OrdersDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
 import com.ijse.gdse.finalproject.dto.*;
 import com.ijse.gdse.finalproject.dto.tm.CartTM;
-import com.ijse.gdse.finalproject.model.CustomerModel;
-import com.ijse.gdse.finalproject.model.GemModel;
-import com.ijse.gdse.finalproject.model.OrdersModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.CustomerDAOImpl;
+import com.ijse.gdse.finalproject.dao.custom.impl.GemDAOImpl;
+import com.ijse.gdse.finalproject.dao.custom.impl.OrdersDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -94,9 +101,10 @@ public class OrdersController implements Initializable {
     private TextField txtAddToCartQty;
 
 
-    private final OrdersModel ordersModel = new OrdersModel();
-    private final CustomerModel customerModel = new CustomerModel();
-    private final GemModel gemModel = new GemModel();
+    OrdersDAO ordersDAO = (OrdersDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.ORDER);
+    CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);
+    GemBO gemBO = (GemBO) BOFactory.getInstance().getBO(BOFactory.BOType.GEM);
+
 
 
     private final ObservableList<CartTM> cartTMS = FXCollections.observableArrayList();
@@ -134,9 +142,9 @@ public class OrdersController implements Initializable {
     }
 
     private void refreshPage() throws SQLException {
-        lblOrderId.setText(ordersModel.getNextOrderId());
+        lblOrderId.setText(ordersDAO.getNext());
         lblOrderDate.setText(LocalDate.now().toString());
-        lblPaymentId.setText(ordersModel.getNextPaymentId());
+        lblPaymentId.setText(ordersDAO.getNextPaymentId());
 
         loadCustomerIds();
         loadGemIds();
@@ -155,12 +163,12 @@ public class OrdersController implements Initializable {
     }
 
     private void loadGemIds() throws SQLException {
-        ArrayList<String> gemIds = gemModel.getAllGemIds();
+        ArrayList<String> gemIds = gemBO.getAllGemIds();
         cmbGemId.setItems(FXCollections.observableArrayList(gemIds));
     }
 
     private void loadCustomerIds() throws SQLException {
-        ArrayList<String> customerIds = customerModel.getAllCustomerIds();
+        ArrayList<String> customerIds = customerBO.getAllCustomerIds();
         cmbCustomerId.setItems(FXCollections.observableArrayList(customerIds));
     }
 
@@ -243,7 +251,7 @@ public class OrdersController implements Initializable {
 
         OrdersDTO ordersDTO = new OrdersDTO(orderId, customerId, orderDate, paymentId, totalAmount, paymentMethod, orderDetails);
 
-        if (ordersModel.saveOrder(ordersDTO)) {
+        if (ordersDAO.save(ordersDTO)) {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
             refreshPage();
         } else {
@@ -259,7 +267,7 @@ public class OrdersController implements Initializable {
 
     public void cmbCustomerIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedCustomerId = cmbCustomerId.getValue();
-        CustomerDTO customerDTO = customerModel.findById(selectedCustomerId);
+        CustomerDTO customerDTO = customerBO.findById(selectedCustomerId);
         if (customerDTO != null) {
             lblCustomerName.setText(customerDTO.getName());
         }
@@ -267,7 +275,7 @@ public class OrdersController implements Initializable {
 
     public void cmbItemIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedGemId = cmbGemId.getValue();
-        GemDTO gemDTO = gemModel.findById(selectedGemId);
+        GemDTO gemDTO = gemBO.findById(selectedGemId);
         if (gemDTO != null) {
             lblGemName.setText(gemDTO.getGem_name());
             lblGemQty.setText(String.valueOf(gemDTO.getQty()));

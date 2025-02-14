@@ -1,11 +1,16 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.GemBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.GemDAO;
+import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
+import com.ijse.gdse.finalproject.dao.custom.SupplierOrderDAO;
 import com.ijse.gdse.finalproject.dto.*;
-import com.ijse.gdse.finalproject.dto.tm.CartTM;
 import com.ijse.gdse.finalproject.dto.tm.SupplierOrderCartTM;
-import com.ijse.gdse.finalproject.model.GemModel;
-import com.ijse.gdse.finalproject.model.SupplierModel;
-import com.ijse.gdse.finalproject.model.SupplierOrderModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.GemDAOImpl;
+import com.ijse.gdse.finalproject.dao.custom.impl.SupplierDAOImpl;
+import com.ijse.gdse.finalproject.dao.custom.impl.SupplierOrderDAOImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -98,9 +103,10 @@ public class SupplierOrdersController implements Initializable {
 
 
 
-    private final SupplierOrderModel supplierOrderModel = new SupplierOrderModel();
-    private final SupplierModel supplierModel = new SupplierModel();
-    private final GemModel gemModel = new GemModel();
+   SupplierOrderDAO supplierOrderDAO = (SupplierOrderDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SUPPLIERORDER);
+   SupplierDAO supplierDAO = (SupplierDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SUPPLIER);
+   GemBO gemBO = (GemBO) BOFactory.getInstance().getBO(BOFactory.BOType.GEM);
+
 
     private final ObservableList<SupplierOrderCartTM> supplierOrderCartTMS = FXCollections.observableArrayList();
 
@@ -140,9 +146,9 @@ public class SupplierOrdersController implements Initializable {
     }
 
     private void refreshPage() throws SQLException {
-        lblOrderId.setText(supplierOrderModel.getNextSupplierOrderId());
+        lblOrderId.setText(supplierOrderDAO.getNext());
         lblOrderDate.setText(LocalDate.now().toString());
-        lblSupplierPaymentId.setText(supplierOrderModel.getNextSupplierPaymentId());
+        lblSupplierPaymentId.setText(supplierOrderDAO.getNextSupplierPaymentId());
 
         loadSupplierIds();
         loadGemId();
@@ -165,12 +171,12 @@ public class SupplierOrdersController implements Initializable {
     }
 
     private void loadGemId() throws SQLException {
-        ArrayList<String> gemIds = gemModel.getAllGemIds();
+        ArrayList<String> gemIds = gemBO.getAllGemIds();
         cmbGemId.setItems(FXCollections.observableArrayList(gemIds));
     }
 
     private void loadSupplierIds() throws SQLException {
-        ArrayList<String> supplierIds = supplierModel.getAllSupplierIds();
+        ArrayList<String> supplierIds = supplierDAO.getAllSupplierIds();
         cmbSupplierId.setItems(FXCollections.observableArrayList(supplierIds));
     }
 
@@ -257,7 +263,7 @@ public class SupplierOrdersController implements Initializable {
 
         SupplierOrderDTO supplierOrderDTO = new SupplierOrderDTO(orderId, supplierId, orderDate, paymentId, totalAmount, paymentMethod, supplierorderDetails);
 
-        if (supplierOrderModel.saveSupplierOrder(supplierOrderDTO)) {
+        if (supplierOrderDAO.save(supplierOrderDTO)) {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
             refreshPage();
         } else {
@@ -270,7 +276,7 @@ public class SupplierOrdersController implements Initializable {
 
     public void cmbSupplierIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedSupplierId = cmbSupplierId.getSelectionModel().getSelectedItem();
-        SupplierDTO supplierDTO = supplierModel.findById(selectedSupplierId);
+        SupplierDTO supplierDTO = supplierDAO.findById(selectedSupplierId);
 
         // If customer found (customerDTO not null)
         if (supplierDTO != null) {
@@ -282,7 +288,7 @@ public class SupplierOrdersController implements Initializable {
 
     public void cmbGemIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedGemId = cmbGemId.getSelectionModel().getSelectedItem();
-        GemDTO gemDTO = gemModel.findById(selectedGemId);
+        GemDTO gemDTO = gemBO.findById(selectedGemId);
 
         // If item found (itemDTO not null)
         if (gemDTO != null) {

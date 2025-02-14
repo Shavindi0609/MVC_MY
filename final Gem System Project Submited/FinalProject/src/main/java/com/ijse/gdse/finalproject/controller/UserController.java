@@ -1,10 +1,11 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.UserBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
+import com.ijse.gdse.finalproject.dao.custom.UserDAO;
 import com.ijse.gdse.finalproject.dto.UserDTO;
-import com.ijse.gdse.finalproject.dto.tm.UserTM;
-import com.ijse.gdse.finalproject.model.UserModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class UserController implements Initializable {
@@ -41,6 +41,7 @@ public class UserController implements Initializable {
     @FXML
     private TextField txtUserRole;
 
+       UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,11 +65,11 @@ public class UserController implements Initializable {
     }
 
     private void loadNextUserId() throws SQLException {
-        String nextUserId = userModel.getNextUserId();
+        String nextUserId = userBO.getNextUserId();
         lblUserId.setText(nextUserId);
     }
 
-    UserModel userModel = new UserModel();
+
 
 
     public void registerOnAction(ActionEvent actionEvent) throws SQLException {
@@ -80,7 +81,7 @@ public class UserController implements Initializable {
 
         UserDTO userDTO = new UserDTO(userId, username, role, password);
 
-        boolean isSaved = userModel.saveUser(userDTO);
+        boolean isSaved = userBO.saveUser(userDTO);
         if (isSaved) {
             refreshPage();
             new Alert(Alert.AlertType.INFORMATION, "User Registerd...!").show();

@@ -1,7 +1,10 @@
 package com.ijse.gdse.finalproject.controller;
 
+import com.ijse.gdse.finalproject.bo.BOFactory;
+import com.ijse.gdse.finalproject.bo.custom.UserBO;
+import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dto.UserDTO;
-import com.ijse.gdse.finalproject.model.UserModel;
+import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -18,14 +21,14 @@ public class ProfileController {
     public Label lbluserId;
     public Label lblrole;
 
-    UserModel userModel = new UserModel();
+    UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
 
     public void setData(String username) {
        lblusername.setText(username);
         System.out.println("Setting data for userId: " + username); // Debug output
 
         try {
-            UserDTO userDetails = userModel.getUserDetails(username);
+            UserDTO userDetails = userBO.getUserDetails(username);
 
             lbluserId.setText(userDetails.getUserId());
             lblrole.setText(userDetails.getRole());

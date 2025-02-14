@@ -1,22 +1,23 @@
-package com.ijse.gdse.finalproject.model;
+package com.ijse.gdse.finalproject.dao.custom.impl;
 
+import com.ijse.gdse.finalproject.dao.custom.OrdersDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
 import com.ijse.gdse.finalproject.dto.OrdersDTO;
-import com.ijse.gdse.finalproject.util.CrudUtil;
+import com.ijse.gdse.finalproject.dao.SQLUtil;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class OrdersModel {
+public class OrdersDAOImpl implements OrdersDAO {
 
-    private final OrderDetailsModel orderDetailsModel = new OrderDetailsModel();
+    private final OrderDetailsDAOImpl orderDetailsModel = new OrderDetailsDAOImpl();
 
 
 
-    public String getNextOrderId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select order_id from orders order by order_id desc limit 1");
+    public String getNext() throws SQLException {
+        ResultSet rst = SQLUtil.execute("select order_id from orders order by order_id desc limit 1");
 
         if (rst.next()) {
             String lastId = rst.getString(1);
@@ -29,8 +30,13 @@ public class OrdersModel {
         return "O001";
     }
 
+    @Override
+    public ArrayList<OrdersDTO> getAll() throws SQLException {
+        return null;
+    }
+
     public String getNextPaymentId() throws SQLException {
-        ResultSet rst = CrudUtil.execute("select payment_id from payment order by payment_id desc limit 1");
+        ResultSet rst = SQLUtil.execute("select payment_id from payment order by payment_id desc limit 1");
 
         if (rst.next()) {
             String lastId = rst.getString(1);
@@ -43,14 +49,14 @@ public class OrdersModel {
         return "P001";
     }
 
-    public boolean saveOrder(OrdersDTO orderDTO) throws SQLException {
+    public boolean save(OrdersDTO orderDTO) throws SQLException {
         System.out.println("clicked");
         Connection connection = DBConnection.getInstance().getConnection();
         connection.setAutoCommit(false); // Start transaction
 
         try {
             //save payment
-            boolean isPaymentSaved = CrudUtil.execute(
+            boolean isPaymentSaved = SQLUtil.execute(
                     "INSERT INTO payment (payment_id, method, total_amount) VALUES (?, ?, ?)",
                     orderDTO.getPaymentId(),
                     orderDTO.getMethod(),
@@ -62,7 +68,7 @@ public class OrdersModel {
                 return false;
             }
             // Save the order
-            boolean isOrderSaved = CrudUtil.execute(
+            boolean isOrderSaved = SQLUtil.execute(
                     "INSERT INTO orders (order_id, customer_id, order_date, payment_id) VALUES (?, ?, ?, ?)",
                     orderDTO.getOrderId(),
                     orderDTO.getCustomerId(),
@@ -94,6 +100,16 @@ public class OrdersModel {
         } finally {
             connection.setAutoCommit(true); // Restore auto-commit
         }
+    }
+
+    @Override
+    public boolean update(OrdersDTO DTO) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String Id) throws SQLException {
+        return false;
     }
 }
 
