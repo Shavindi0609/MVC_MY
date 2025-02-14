@@ -2,6 +2,7 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.GemBO;
+import com.ijse.gdse.finalproject.bo.custom.SupplierOrderBO;
 import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dao.custom.GemDAO;
 import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
@@ -103,10 +104,7 @@ public class SupplierOrdersController implements Initializable {
 
 
 
-   SupplierOrderDAO supplierOrderDAO = (SupplierOrderDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SUPPLIERORDER);
-   SupplierDAO supplierDAO = (SupplierDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SUPPLIER);
-   GemBO gemBO = (GemBO) BOFactory.getInstance().getBO(BOFactory.BOType.GEM);
-
+  SupplierOrderBO supplierOrderBO = (SupplierOrderBO) BOFactory.getInstance().getBO(BOFactory.BOType.SUPPLIERORDERS);
 
     private final ObservableList<SupplierOrderCartTM> supplierOrderCartTMS = FXCollections.observableArrayList();
 
@@ -146,9 +144,9 @@ public class SupplierOrdersController implements Initializable {
     }
 
     private void refreshPage() throws SQLException {
-        lblOrderId.setText(supplierOrderDAO.getNext());
+        lblOrderId.setText(supplierOrderBO.getNextSupplierOrderId());
         lblOrderDate.setText(LocalDate.now().toString());
-        lblSupplierPaymentId.setText(supplierOrderDAO.getNextSupplierPaymentId());
+        lblSupplierPaymentId.setText(supplierOrderBO.getNextSupplierPaymentId());
 
         loadSupplierIds();
         loadGemId();
@@ -171,12 +169,12 @@ public class SupplierOrdersController implements Initializable {
     }
 
     private void loadGemId() throws SQLException {
-        ArrayList<String> gemIds = gemBO.getAllGemIds();
+        ArrayList<String> gemIds = supplierOrderBO.getAllGemIds();
         cmbGemId.setItems(FXCollections.observableArrayList(gemIds));
     }
 
     private void loadSupplierIds() throws SQLException {
-        ArrayList<String> supplierIds = supplierDAO.getAllSupplierIds();
+        ArrayList<String> supplierIds = supplierOrderBO.getAllSupplierIds();
         cmbSupplierId.setItems(FXCollections.observableArrayList(supplierIds));
     }
 
@@ -263,7 +261,7 @@ public class SupplierOrdersController implements Initializable {
 
         SupplierOrderDTO supplierOrderDTO = new SupplierOrderDTO(orderId, supplierId, orderDate, paymentId, totalAmount, paymentMethod, supplierorderDetails);
 
-        if (supplierOrderDAO.save(supplierOrderDTO)) {
+        if (supplierOrderBO.saveSupplierOrder(supplierOrderDTO)) {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
             refreshPage();
         } else {
@@ -276,7 +274,7 @@ public class SupplierOrdersController implements Initializable {
 
     public void cmbSupplierIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedSupplierId = cmbSupplierId.getSelectionModel().getSelectedItem();
-        SupplierDTO supplierDTO = supplierDAO.findById(selectedSupplierId);
+        SupplierDTO supplierDTO = supplierOrderBO.findByIdSupplier(selectedSupplierId);
 
         // If customer found (customerDTO not null)
         if (supplierDTO != null) {
@@ -288,7 +286,7 @@ public class SupplierOrdersController implements Initializable {
 
     public void cmbGemIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedGemId = cmbGemId.getSelectionModel().getSelectedItem();
-        GemDTO gemDTO = gemBO.findById(selectedGemId);
+        GemDTO gemDTO = supplierOrderBO.findByIdGem(selectedGemId);
 
         // If item found (itemDTO not null)
         if (gemDTO != null) {

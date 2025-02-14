@@ -3,6 +3,7 @@ package com.ijse.gdse.finalproject.controller;
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
 import com.ijse.gdse.finalproject.bo.custom.GemBO;
+import com.ijse.gdse.finalproject.bo.custom.OrdersBO;
 import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
 import com.ijse.gdse.finalproject.dao.custom.GemDAO;
@@ -101,10 +102,7 @@ public class OrdersController implements Initializable {
     private TextField txtAddToCartQty;
 
 
-    OrdersDAO ordersDAO = (OrdersDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.ORDER);
-    CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);
-    GemBO gemBO = (GemBO) BOFactory.getInstance().getBO(BOFactory.BOType.GEM);
-
+    OrdersBO ordersBO = (OrdersBO) BOFactory.getInstance().getBO(BOFactory.BOType.ORDERS);
 
 
     private final ObservableList<CartTM> cartTMS = FXCollections.observableArrayList();
@@ -142,9 +140,9 @@ public class OrdersController implements Initializable {
     }
 
     private void refreshPage() throws SQLException {
-        lblOrderId.setText(ordersDAO.getNext());
+        lblOrderId.setText(ordersBO.getNextOrderId());
         lblOrderDate.setText(LocalDate.now().toString());
-        lblPaymentId.setText(ordersDAO.getNextPaymentId());
+        lblPaymentId.setText(ordersBO.getNextPaymentId());
 
         loadCustomerIds();
         loadGemIds();
@@ -162,13 +160,25 @@ public class OrdersController implements Initializable {
         lblTotalAmount.setText("0.00");
     }
 
-    private void loadGemIds() throws SQLException {
-        ArrayList<String> gemIds = gemBO.getAllGemIds();
+     private void loadGemIds() throws SQLException {
+        ArrayList<String> gemIds = ordersBO.getAllGemIds();
         cmbGemId.setItems(FXCollections.observableArrayList(gemIds));
+
+//        try {
+//            ArrayList<String> arrayList = ordersBO.getAllGemIds();
+//            ObservableList<String> allNames = FXCollections.observableArrayList();
+//            allNames.addAll(arrayList);
+//
+//            brandNameCmb.setItems(allNames);
+//
+//        } catch (SQLException e) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR,"Fail to Load Brand Name");
+//            alert.showAndWait();
+//        }
     }
 
     private void loadCustomerIds() throws SQLException {
-        ArrayList<String> customerIds = customerBO.getAllCustomerIds();
+        ArrayList<String> customerIds = ordersBO.getAllCustomerIds();
         cmbCustomerId.setItems(FXCollections.observableArrayList(customerIds));
     }
 
@@ -251,7 +261,7 @@ public class OrdersController implements Initializable {
 
         OrdersDTO ordersDTO = new OrdersDTO(orderId, customerId, orderDate, paymentId, totalAmount, paymentMethod, orderDetails);
 
-        if (ordersDAO.save(ordersDTO)) {
+        if (ordersBO.saveOrder(ordersDTO)) {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
             refreshPage();
         } else {
@@ -267,7 +277,7 @@ public class OrdersController implements Initializable {
 
     public void cmbCustomerIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedCustomerId = cmbCustomerId.getValue();
-        CustomerDTO customerDTO = customerBO.findById(selectedCustomerId);
+        CustomerDTO customerDTO = ordersBO.findByIdCustomer(selectedCustomerId);
         if (customerDTO != null) {
             lblCustomerName.setText(customerDTO.getName());
         }
@@ -275,7 +285,7 @@ public class OrdersController implements Initializable {
 
     public void cmbItemIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedGemId = cmbGemId.getValue();
-        GemDTO gemDTO = gemBO.findById(selectedGemId);
+        GemDTO gemDTO = ordersBO.findByIdGem(selectedGemId);
         if (gemDTO != null) {
             lblGemName.setText(gemDTO.getGem_name());
             lblGemQty.setText(String.valueOf(gemDTO.getQty()));
