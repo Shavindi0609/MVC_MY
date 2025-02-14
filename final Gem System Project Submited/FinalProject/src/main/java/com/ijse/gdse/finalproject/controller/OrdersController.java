@@ -1,19 +1,14 @@
 package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
-import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
-import com.ijse.gdse.finalproject.bo.custom.GemBO;
 import com.ijse.gdse.finalproject.bo.custom.OrdersBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
-import com.ijse.gdse.finalproject.dao.custom.GemDAO;
-import com.ijse.gdse.finalproject.dao.custom.OrdersDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
 import com.ijse.gdse.finalproject.dto.*;
 import com.ijse.gdse.finalproject.dto.tm.CartTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.CustomerDAOImpl;
-import com.ijse.gdse.finalproject.dao.custom.impl.GemDAOImpl;
-import com.ijse.gdse.finalproject.dao.custom.impl.OrdersDAOImpl;
+import com.ijse.gdse.finalproject.entity.Customer;
+import com.ijse.gdse.finalproject.entity.Gem;
+import com.ijse.gdse.finalproject.entity.OrderDetails;
+import com.ijse.gdse.finalproject.entity.Orders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -254,14 +249,14 @@ public class OrdersController implements Initializable {
         String customerId = cmbCustomerId.getValue();
         String paymentMethod = cmbPaymentmethod.getValue();
 
-        ArrayList<OrderDetailsDTO> orderDetails = new ArrayList<>();
+        ArrayList<OrderDetails> orderDetails = new ArrayList<>();
         for (CartTM cartTM : cartTMS) {
-            orderDetails.add(new OrderDetailsDTO(orderId, cartTM.getGemId(), cartTM.getCartQuantity(), cartTM.getUnitPrice()));
+            orderDetails.add(new OrderDetails(orderId, cartTM.getGemId(), cartTM.getCartQuantity(), cartTM.getUnitPrice()));
         }
 
-        OrdersDTO ordersDTO = new OrdersDTO(orderId, customerId, orderDate, paymentId, totalAmount, paymentMethod, orderDetails);
+        Orders orders = new Orders(orderId, customerId, orderDate, paymentId, totalAmount, paymentMethod, orderDetails);
 
-        if (ordersBO.saveOrder(ordersDTO)) {
+        if (ordersBO.saveOrder(orders)) {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
             refreshPage();
         } else {
@@ -277,19 +272,19 @@ public class OrdersController implements Initializable {
 
     public void cmbCustomerIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedCustomerId = cmbCustomerId.getValue();
-        CustomerDTO customerDTO = ordersBO.findByIdCustomer(selectedCustomerId);
-        if (customerDTO != null) {
-            lblCustomerName.setText(customerDTO.getName());
+        Customer customer = ordersBO.findByIdCustomer(selectedCustomerId);
+        if (customer != null) {
+            lblCustomerName.setText(customer.getName());
         }
     }
 
     public void cmbItemIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedGemId = cmbGemId.getValue();
-        GemDTO gemDTO = ordersBO.findByIdGem(selectedGemId);
-        if (gemDTO != null) {
-            lblGemName.setText(gemDTO.getGem_name());
-            lblGemQty.setText(String.valueOf(gemDTO.getQty()));
-            lblGemUnitPrice.setText(String.valueOf(gemDTO.getPrice()));
+        Gem gem = ordersBO.findByIdGem(selectedGemId);
+        if (gem != null) {
+            lblGemName.setText(gem.getGem_name());
+            lblGemQty.setText(String.valueOf(gem.getQty()));
+            lblGemUnitPrice.setText(String.valueOf(gem.getPrice()));
         }
     }
 

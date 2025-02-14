@@ -12,6 +12,10 @@ import com.ijse.gdse.finalproject.dto.tm.SupplierOrderCartTM;
 import com.ijse.gdse.finalproject.dao.custom.impl.GemDAOImpl;
 import com.ijse.gdse.finalproject.dao.custom.impl.SupplierDAOImpl;
 import com.ijse.gdse.finalproject.dao.custom.impl.SupplierOrderDAOImpl;
+import com.ijse.gdse.finalproject.entity.Gem;
+import com.ijse.gdse.finalproject.entity.Supplier;
+import com.ijse.gdse.finalproject.entity.SupplierOrder;
+import com.ijse.gdse.finalproject.entity.SupplierOrderDetails;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -254,14 +258,14 @@ public class SupplierOrdersController implements Initializable {
 //        String supplierId = cmbSupplierId.getValue();
 //        //Integer totalAmount = Integer.valueOf(lblTotalAmount.getText());
 
-        ArrayList<SupplierOrderDetailsDTO> supplierorderDetails = new ArrayList<>();
+        ArrayList<SupplierOrderDetails> supplierorderDetails = new ArrayList<>();
         for (SupplierOrderCartTM supplierOrderCartTM : supplierOrderCartTMS) {
-            supplierorderDetails.add(new SupplierOrderDetailsDTO(orderId, supplierOrderCartTM.getGemId(), supplierOrderCartTM.getCartQuantity(), supplierOrderCartTM.getUnitPrice()));
+            supplierorderDetails.add(new SupplierOrderDetails(orderId, supplierOrderCartTM.getGemId(), supplierOrderCartTM.getCartQuantity(), supplierOrderCartTM.getUnitPrice()));
         }
 
-        SupplierOrderDTO supplierOrderDTO = new SupplierOrderDTO(orderId, supplierId, orderDate, paymentId, totalAmount, paymentMethod, supplierorderDetails);
+        SupplierOrder supplierOrder = new SupplierOrder(orderId, supplierId, orderDate, paymentId, totalAmount, paymentMethod, supplierorderDetails);
 
-        if (supplierOrderBO.saveSupplierOrder(supplierOrderDTO)) {
+        if (supplierOrderBO.saveSupplierOrder(supplierOrder)) {
             new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
             refreshPage();
         } else {
@@ -274,27 +278,27 @@ public class SupplierOrdersController implements Initializable {
 
     public void cmbSupplierIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedSupplierId = cmbSupplierId.getSelectionModel().getSelectedItem();
-        SupplierDTO supplierDTO = supplierOrderBO.findByIdSupplier(selectedSupplierId);
+        Supplier supplier = supplierOrderBO.findByIdSupplier(selectedSupplierId);
 
         // If customer found (customerDTO not null)
-        if (supplierDTO != null) {
+        if (supplier != null) {
 
             // FIll customer related labels
-            lblSupplierName.setText(supplierDTO.getName());
+            lblSupplierName.setText(supplier.getName());
         }
     }
 
     public void cmbGemIdOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedGemId = cmbGemId.getSelectionModel().getSelectedItem();
-        GemDTO gemDTO = supplierOrderBO.findByIdGem(selectedGemId);
+        Gem gem = supplierOrderBO.findByIdGem(selectedGemId);
 
         // If item found (itemDTO not null)
-        if (gemDTO != null) {
+        if (gem != null) {
 
             // FIll item related labels
-            lblGemName.setText(gemDTO.getGem_name());
-            lblGemQty.setText(String.valueOf(gemDTO.getQty()));
-            lblGemUnitPrice.setText(String.valueOf(gemDTO.getPrice()));
+            lblGemName.setText(gem.getGem_name());
+            lblGemQty.setText(String.valueOf(gem.getQty()));
+            lblGemUnitPrice.setText(String.valueOf(gem.getPrice()));
         }
     }
 

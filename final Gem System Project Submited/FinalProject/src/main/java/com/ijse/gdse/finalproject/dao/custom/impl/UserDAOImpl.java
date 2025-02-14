@@ -1,8 +1,8 @@
 package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.UserDAO;
-import com.ijse.gdse.finalproject.dto.UserDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,13 +22,13 @@ public class UserDAOImpl implements UserDAO {
         return "U001";
     }
 
-    public ArrayList<UserDTO> getAll() throws SQLException {
+    public ArrayList<User> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from user");
 
-        ArrayList<UserDTO> userDTOS = new ArrayList<>();
+        ArrayList<User> userDTOS = new ArrayList<>();
 
         while (rst.next()){
-            UserDTO userDTO = new UserDTO(
+            User userDTO = new User(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -40,18 +40,18 @@ public class UserDAOImpl implements UserDAO {
         return userDTOS;
     }
 
-    public boolean save(UserDTO userDTO) throws SQLException {
+    public boolean save(User user) throws SQLException {
         return SQLUtil.execute(
                 "insert into user(user_id,user_name,role,password) values (?,?,?,?)",
-                userDTO.getUserId(),
-                userDTO.getUsername(),
-                userDTO.getRole(),
-                userDTO.getPassword()
+                user.getUserId(),
+                user.getUsername(),
+                user.getRole(),
+                user.getPassword()
         );
     }
 
     @Override
-    public boolean update(UserDTO DTO) throws SQLException {
+    public boolean update(User DTO) throws SQLException {
         return false;
     }
 
@@ -60,16 +60,16 @@ public class UserDAOImpl implements UserDAO {
         return false;
     }
 
-    public UserDTO getUserDetails(String username) throws SQLException {
+    public User getUserDetails(String username) throws SQLException {
         ResultSet rst = SQLUtil.execute("SELECT * FROM user WHERE user_name = ?", username);
-        UserDTO userDTO = new UserDTO();
+        User user = new User();
         try {
 
             if (rst.next()) {
-                userDTO.setUserId(rst.getString(1));
-                userDTO.setUsername(rst.getString(2));
-                userDTO.setRole(rst.getString(3));
-                userDTO.setPassword(rst.getString(4));
+                user.setUserId(rst.getString(1));
+                user.setUsername(rst.getString(2));
+                user.setRole(rst.getString(3));
+                user.setPassword(rst.getString(4));
 
 
             } else {
@@ -79,7 +79,7 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
             System.out.println("Error retrieving user details: " + e.getMessage());
         }
-        return userDTO;
+        return user;
     }
 
     public ArrayList<String> getAllUserIds() throws SQLException {

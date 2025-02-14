@@ -1,7 +1,8 @@
 package com.ijse.gdse.finalproject.dao.custom;
 
 import com.ijse.gdse.finalproject.dao.CrudDAO;
-import com.ijse.gdse.finalproject.dto.CategoryDTO;
+import com.ijse.gdse.finalproject.entity.Category;
 
-public interface CategoryDAO extends CrudDAO<CategoryDTO> {
+
+public interface CategoryDAO extends CrudDAO<Category> {
 }

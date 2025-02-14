@@ -2,15 +2,9 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
-import com.ijse.gdse.finalproject.bo.custom.UserBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
-import com.ijse.gdse.finalproject.dao.custom.UserDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
-import com.ijse.gdse.finalproject.dto.CustomerDTO;
 import com.ijse.gdse.finalproject.dto.tm.CustomerTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.CustomerDAOImpl;
-import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
+import com.ijse.gdse.finalproject.entity.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,7 +66,7 @@ public class CustomerController implements Initializable {
     @FXML
     private Label lblCustomerId;
 
-    UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
+    //UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
     CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);
 
     @Override
@@ -121,26 +115,26 @@ public class CustomerController implements Initializable {
     }
 
     private void loadUserIds() throws SQLException {
-        ArrayList<String> userIds = userBO.getAllUserIds();
+        ArrayList<String> userIds = customerBO.getAllUserIds();
         cmbUserId.setItems(FXCollections.observableArrayList(userIds));
     }
 
 
 
     private void loadCustomerTableData() throws SQLException {
-        ArrayList<CustomerDTO> customerDTOS = customerBO.getAllCustomer();
+        ArrayList<Customer> customerDTOS = customerBO.getAllCustomer();
 
         ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList();
 
-        for (CustomerDTO customerDTO : customerDTOS) {
+        for (Customer customer : customerDTOS) {
             CustomerTM customerTM = new CustomerTM(
-                    customerDTO.getCustomerId(),
-                    customerDTO.getName(),
-                    customerDTO.getNic(),
-                    customerDTO.getEmail(),
-                    customerDTO.getPhone(),
-                    customerDTO.getAddress(),
-                    customerDTO.getUserId()
+                    customer.getCustomerId(),
+                    customer.getName(),
+                    customer.getNic(),
+                    customer.getEmail(),
+                    customer.getPhone(),
+                    customer.getAddress(),
+                    customer.getUserId()
             );
             customerTMS.add(customerTM);
         }
@@ -215,7 +209,7 @@ public class CustomerController implements Initializable {
 
 
         if (isValidName && isValidNic && isValidEmail && isValidPhone && isValidAddress) {
-            CustomerDTO customerDTO = new CustomerDTO(
+            Customer customer = new Customer(
                     customerId,
                     name,
                     nic,
@@ -225,7 +219,7 @@ public class CustomerController implements Initializable {
                     userId
             );
 
-            boolean isSaved = customerBO.saveCustomer(customerDTO);
+            boolean isSaved = customerBO.saveCustomer(customer);
             if (isSaved) {
                 refreshPage();
                 updateCustomerCount();
@@ -325,7 +319,7 @@ public class CustomerController implements Initializable {
         }
 
         if (isValidName && isValidNic && isValidEmail && isValidPhone && isValidAddress) {
-            CustomerDTO customerDTO = new CustomerDTO(
+            Customer customer = new Customer(
                     customerId,
                     name,
                     nic,
@@ -335,7 +329,7 @@ public class CustomerController implements Initializable {
                     userId
             );
 
-            boolean isUpdate = customerBO.updateCustomer(customerDTO);
+            boolean isUpdate = customerBO.updateCustomer(customer);
             if (isUpdate) {
                 refreshPage();
                 loadCustomerTableData();

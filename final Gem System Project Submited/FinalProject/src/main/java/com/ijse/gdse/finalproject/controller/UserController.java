@@ -2,10 +2,7 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.UserBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.UserDAO;
-import com.ijse.gdse.finalproject.dto.UserDTO;
-import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
+import com.ijse.gdse.finalproject.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,9 +76,9 @@ public class UserController implements Initializable {
         String password = txtPassword.getText();
         String confirmPassword = txtConfirmPassword.getText();
 
-        UserDTO userDTO = new UserDTO(userId, username, role, password);
+        User user = new User(userId, username, role, password);
 
-        boolean isSaved = userBO.saveUser(userDTO);
+        boolean isSaved = userBO.saveUser(user);
         if (isSaved) {
             refreshPage();
             new Alert(Alert.AlertType.INFORMATION, "User Registerd...!").show();

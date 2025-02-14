@@ -3,7 +3,7 @@ package com.ijse.gdse.finalproject.bo.custom.impl;
 import com.ijse.gdse.finalproject.bo.custom.UserBO;
 import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dao.custom.UserDAO;
-import com.ijse.gdse.finalproject.dto.UserDTO;
+import com.ijse.gdse.finalproject.entity.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ public class UserBOImpl implements UserBO {
 
 
     @Override
-    public boolean saveUser(UserDTO userDTO) throws SQLException {
-        return userDAO.save(userDTO);
+    public boolean saveUser(User user) throws SQLException {
+        return userDAO.save(user);
     }
 
     @Override
-    public UserDTO getUserDetails(String username) throws SQLException {
+    public User getUserDetails(String username) throws SQLException {
         return userDAO.getUserDetails(username);
     }
 

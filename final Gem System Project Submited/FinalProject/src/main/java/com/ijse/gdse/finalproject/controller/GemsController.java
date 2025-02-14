@@ -2,14 +2,11 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.GemBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.GemDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
-import com.ijse.gdse.finalproject.dto.Gem2DTO;
-import com.ijse.gdse.finalproject.dto.GemDTO;
 import com.ijse.gdse.finalproject.dto.tm.Gem2TM;
 import com.ijse.gdse.finalproject.dto.tm.GemTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.GemDAOImpl;
+import com.ijse.gdse.finalproject.entity.Gem;
+import com.ijse.gdse.finalproject.entity.Gem2;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -134,19 +131,19 @@ public class GemsController implements Initializable {
 
 
     private void loadTableData() throws SQLException {
-        ArrayList<GemDTO> gemDTOS = gemBO.getAllGem();
+        ArrayList<Gem> gemDTOS = gemBO.getAllGem();
 
         ObservableList<GemTM> gemTMS = FXCollections.observableArrayList();
-        for (GemDTO gemDTO : gemDTOS) {
+        for (Gem gem : gemDTOS) {
            GemTM gemTM = new GemTM(
-                   gemDTO.getGem_id(),
-                   gemDTO.getGem_name(),
-                   gemDTO.getGem_color(),
-                   gemDTO.getSize(),
-                   gemDTO.getPrice(),
-                   gemDTO.getQty(),
-                   gemDTO.getIs_cetified(),
-                   gemDTO.getCategory_id()
+                   gem.getGem_id(),
+                   gem.getGem_name(),
+                   gem.getGem_color(),
+                   gem.getSize(),
+                   gem.getPrice(),
+                   gem.getQty(),
+                   gem.getIs_cetified(),
+                   gem.getCategory_id()
 
             );
             gemTMS.add(gemTM);
@@ -156,14 +153,14 @@ public class GemsController implements Initializable {
     }
 
     private void loadTable2Data() throws SQLException {
-        ArrayList<Gem2DTO> Gem2DTOS = gemBO.getAllCategory();
+        ArrayList<Gem2> Gem2DTOS = gemBO.getAllCategory();
 
         ObservableList<Gem2TM> Gem2TMS = FXCollections.observableArrayList();
 
-        for (Gem2DTO Gem2DTO : Gem2DTOS) {
+        for (Gem2 Gem2 : Gem2DTOS) {
             Gem2TM Gem2TM = new Gem2TM(
-                    Gem2DTO.getCategoryId(),
-                    Gem2DTO.getCategoryName()
+                    Gem2.getCategoryId(),
+                    Gem2.getCategoryName()
             );
             Gem2TMS.add(Gem2TM);
         }
@@ -243,7 +240,7 @@ public class GemsController implements Initializable {
             Integer qty = Integer.valueOf(qtyText);
             Boolean is_cetified = Boolean.valueOf(isCetifiedText);
 
-            GemDTO gemDTO = new GemDTO(
+            Gem gem = new Gem(
                     gem_id,
                     gem_name,
                     gem_color,
@@ -254,7 +251,7 @@ public class GemsController implements Initializable {
                     category_id
             );
 
-            boolean isSaved = gemBO.saveGem(gemDTO);
+            boolean isSaved = gemBO.saveGem(gem);
             if (isSaved) {
                 loadTableData();
                 refreshPage();
@@ -354,7 +351,7 @@ public class GemsController implements Initializable {
             Integer qty = Integer.valueOf(qtyText);
             Boolean is_cetified = Boolean.valueOf(isCetifiedText);
 
-            GemDTO gemDTO = new GemDTO(
+            Gem gem = new Gem(
                     gem_id,
                     gem_name,
                     gem_color,
@@ -365,7 +362,7 @@ public class GemsController implements Initializable {
                     category_id
             );
 
-            boolean isSaved = gemBO.updateGem(gemDTO);
+            boolean isSaved = gemBO.updateGem(gem);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Gem saved...!").show();

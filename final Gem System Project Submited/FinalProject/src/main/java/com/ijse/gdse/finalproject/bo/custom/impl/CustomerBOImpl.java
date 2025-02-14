@@ -3,8 +3,9 @@ package com.ijse.gdse.finalproject.bo.custom.impl;
 import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
 import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
-import com.ijse.gdse.finalproject.dto.CustomerDTO;
-import com.ijse.gdse.finalproject.dto.GemDTO;
+import com.ijse.gdse.finalproject.dao.custom.UserDAO;
+import com.ijse.gdse.finalproject.entity.Customer;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 public class CustomerBOImpl implements CustomerBO {
 
     CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.CUSTOMER);
+    UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.USER);
+
 
     @Override
     public String getNextCustomerId() throws SQLException {
@@ -19,18 +22,19 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public boolean saveCustomer(CustomerDTO customerDTO) throws SQLException {
-        return customerDAO.save(customerDTO);
+    public boolean saveCustomer(Customer customer) throws SQLException {
+        return customerDAO.save(customer);
     }
 
     @Override
-    public ArrayList<CustomerDTO> getAllCustomer() throws SQLException {
+    public ArrayList<Customer> getAllCustomer() throws SQLException {
         return customerDAO.getAll();
     }
 
+
     @Override
-    public boolean updateCustomer(CustomerDTO customerDTO) throws SQLException {
-        return customerDAO.update(customerDTO);
+    public boolean updateCustomer(Customer customer) throws SQLException {
+        return customerDAO.update(customer);
     }
 
     @Override
@@ -39,9 +43,10 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public ArrayList<String> getAllCustomerIds() throws SQLException {
-        return customerDAO.getAllCustomerIds();
+    public ArrayList<String> getAllUserIds() throws SQLException {
+        return userDAO.getAllUserIds();
     }
+
 
     @Override
     public int getCustomerCount() throws SQLException {
@@ -49,7 +54,7 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public CustomerDTO findById(String selectedItemId) throws SQLException {
+    public Customer findById(String selectedItemId) throws SQLException {
         return customerDAO.findById(selectedItemId);
     }
 }

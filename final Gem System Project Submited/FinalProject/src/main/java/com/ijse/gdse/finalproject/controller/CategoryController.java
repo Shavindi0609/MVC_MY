@@ -2,12 +2,8 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.CategoryBO;
-import com.ijse.gdse.finalproject.bo.custom.impl.CategoryBOImpl;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.CategoryDAO;
-import com.ijse.gdse.finalproject.dto.CategoryDTO;
 import com.ijse.gdse.finalproject.dto.tm.CategoryTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.CategoryDAOImpl;
+import com.ijse.gdse.finalproject.entity.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -85,14 +81,14 @@ public class CategoryController implements Initializable {
 
 
     private void loadCategoryTableData() throws SQLException {
-        ArrayList<CategoryDTO> categoryDTOS = categoryBO.getAllCategory();
+        ArrayList<Category> categoryDTOS = categoryBO.getAllCategory();
 
         ObservableList<CategoryTM> categoryTMS = FXCollections.observableArrayList();
 
-        for (CategoryDTO categoryDTO : categoryDTOS) {
+        for (Category category : categoryDTOS) {
             CategoryTM categoryTM = new CategoryTM(
-                    categoryDTO.getCategoryId(),
-                    categoryDTO.getCategoryName()
+                    category.getCategoryId(),
+                    category.getCategoryName()
 
             );
             categoryTMS.add(categoryTM);
@@ -125,12 +121,12 @@ public class CategoryController implements Initializable {
         }
 
         if (isValidName) {
-            CategoryDTO categoryDTO = new CategoryDTO(
+            Category category = new Category(
                     categoryId,
                     categoryName
             );
 
-            boolean isSaved = categoryBO.saveCategory(categoryDTO);
+            boolean isSaved = categoryBO.saveCategory(category);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Category saved...!").show();
@@ -190,12 +186,12 @@ public class CategoryController implements Initializable {
         }
 
         if (isValidName) {
-            CategoryDTO categoryDTO = new CategoryDTO(
+            Category category = new Category(
                     categoryId,
                     categoryName
             );
 
-            boolean isUpdate = categoryBO.updateCategory(categoryDTO);
+            boolean isUpdate = categoryBO.updateCategory(category);
             if (isUpdate) {
                 refreshPage();
                 loadCategoryTableData();

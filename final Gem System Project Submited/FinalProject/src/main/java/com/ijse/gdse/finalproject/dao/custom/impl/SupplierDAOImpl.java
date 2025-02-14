@@ -1,8 +1,8 @@
 package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
-import com.ijse.gdse.finalproject.dto.SupplierDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.Supplier;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class SupplierDAOImpl implements SupplierDAO {
 
-    public ArrayList<SupplierDTO> getAll() throws SQLException {
+    public ArrayList<Supplier> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from supplier");
 
-        ArrayList<SupplierDTO> supplierDTOS = new ArrayList<>();
+        ArrayList<Supplier> supplierDTOS = new ArrayList<>();
 
         while (rst.next()) {
-            SupplierDTO supplierDTO = new SupplierDTO(
+            Supplier supplier = new Supplier(
                     rst.getString(1),
                     rst.getString(2),  // Name
                     rst.getString(3),  // NIC
@@ -24,7 +24,7 @@ public class SupplierDAOImpl implements SupplierDAO {
                     rst.getString(5),   //phone
                     rst.getString(6)    //address
             );
-            supplierDTOS.add(supplierDTO);
+            supplierDTOS.add(supplier);
         }
         return supplierDTOS;
     }
@@ -42,27 +42,27 @@ public class SupplierDAOImpl implements SupplierDAO {
         return "S001";
     }
 
-    public boolean save(SupplierDTO supplierDTO) throws SQLException {
+    public boolean save(Supplier supplier) throws SQLException {
         return SQLUtil.execute(
                 "insert into supplier(supplier_id,name,nic,email,phone,address) values (?,?,?,?,?,?)",
-                supplierDTO.getSupplierId(),
-                supplierDTO.getName(),
-                supplierDTO.getNic(),
-                supplierDTO.getEmail(),
-                supplierDTO.getPhone(),
-                supplierDTO.getAddress()
+                supplier.getSupplierId(),
+                supplier.getName(),
+                supplier.getNic(),
+                supplier.getEmail(),
+                supplier.getPhone(),
+                supplier.getAddress()
         );
     }
 
-    public boolean update(SupplierDTO supplierDTO) throws SQLException {
+    public boolean update(Supplier supplier) throws SQLException {
         return SQLUtil.execute(
                 "update supplier set name=?, nic=?, email=?, phone=?, address=? where supplier_id=?",
-                supplierDTO.getName(),
-                supplierDTO.getNic(),
-                supplierDTO.getEmail(),
-                supplierDTO.getPhone(),
-                supplierDTO.getAddress(),
-                supplierDTO.getSupplierId()
+                supplier.getName(),
+                supplier.getNic(),
+                supplier.getEmail(),
+                supplier.getPhone(),
+                supplier.getAddress(),
+                supplier.getSupplierId()
         );
     }
 
@@ -82,11 +82,11 @@ public class SupplierDAOImpl implements SupplierDAO {
         return supplierIds;
     }
 
-    public SupplierDTO findById(String selectedSupplierId) throws SQLException {
+    public Supplier findById(String selectedSupplierId) throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from supplier where supplier_id=?", selectedSupplierId);
 
         if (rst.next()) {
-            return new SupplierDTO(
+            return new Supplier(
                     rst.getString(1),  // Customer ID
                     rst.getString(2),  // Name
                     rst.getString(3),  // NIC

@@ -1,8 +1,8 @@
 package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
-import com.ijse.gdse.finalproject.dto.CustomerDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,26 +23,26 @@ public class CustomerDAOImpl implements CustomerDAO {
         return "C001";
     }
 
-    public boolean save(CustomerDTO customerDTO) throws SQLException {
+    public boolean save(Customer customer) throws SQLException {
         return SQLUtil.execute(
                 "insert into customer(customer_id , name , nic , email , phone , address,user_id) values (?,?,?,?,?,?,?)",
-                customerDTO.getCustomerId(),
-                customerDTO.getName(),
-                customerDTO.getNic(),
-                customerDTO.getEmail(),
-                customerDTO.getPhone(),
-                customerDTO.getAddress(),
-                customerDTO.getUserId()
+                customer.getCustomerId(),
+                customer.getName(),
+                customer.getNic(),
+                customer.getEmail(),
+                customer.getPhone(),
+                customer.getAddress(),
+                customer.getUserId()
         );
     }
 
-    public ArrayList<CustomerDTO> getAll() throws SQLException {
+    public ArrayList<Customer> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from customer");
 
-        ArrayList<CustomerDTO> customerDTOS = new ArrayList<>();
+        ArrayList<Customer> customerDTOS = new ArrayList<>();
 
         while (rst.next()) {
-            CustomerDTO customerDTO = new CustomerDTO(
+            Customer customer = new Customer(
                     rst.getString(1),  // Customer ID
                     rst.getString(2),  // Name
                     rst.getString(3),  // NIC
@@ -51,21 +51,21 @@ public class CustomerDAOImpl implements CustomerDAO {
                     rst.getString(6),
                     rst.getString(7)
             );
-            customerDTOS.add(customerDTO);
+            customerDTOS.add(customer);
         }
         return customerDTOS;
     }
 
-    public boolean update(CustomerDTO customerDTO) throws SQLException {
+    public boolean update(Customer customer) throws SQLException {
         return SQLUtil.execute(
                 "update customer set name=?, nic=?, email=?, phone=?, address=? , user_id=? where customer_id=?",
-                customerDTO.getName(),
-                customerDTO.getNic(),
-                customerDTO.getEmail(),
-                customerDTO.getPhone(),
-                customerDTO.getAddress(),
-                customerDTO.getUserId(),
-                customerDTO.getCustomerId()
+                customer.getName(),
+                customer.getNic(),
+                customer.getEmail(),
+                customer.getPhone(),
+                customer.getAddress(),
+                customer.getUserId(),
+                customer.getCustomerId()
         );
     }
 
@@ -85,11 +85,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         return customerIds;
     }
 
-    public CustomerDTO findById(String selectedCusId) throws SQLException {
+    public Customer findById(String selectedCusId) throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from customer where customer_id=?", selectedCusId);
 
         if (rst.next()) {
-            return new CustomerDTO(
+            return new Customer(
                     rst.getString(1),  // Customer ID
                     rst.getString(2),  // Name
                     rst.getString(3),  // NIC

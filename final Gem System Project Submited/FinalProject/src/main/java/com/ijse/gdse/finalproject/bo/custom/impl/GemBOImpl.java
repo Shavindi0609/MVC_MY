@@ -7,6 +7,10 @@ import com.ijse.gdse.finalproject.dto.Gem2DTO;
 import com.ijse.gdse.finalproject.dto.GemDTO;
 import com.ijse.gdse.finalproject.dto.OrderDetailsDTO;
 import com.ijse.gdse.finalproject.dto.SupplierOrderDetailsDTO;
+import com.ijse.gdse.finalproject.entity.Gem;
+import com.ijse.gdse.finalproject.entity.Gem2;
+import com.ijse.gdse.finalproject.entity.OrderDetails;
+import com.ijse.gdse.finalproject.entity.SupplierOrderDetails;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ public class GemBOImpl implements GemBO {
 
 
     @Override
-    public ArrayList<Gem2DTO> getAllCategory() throws SQLException {
+    public ArrayList<Gem2> getAllCategory() throws SQLException {
         return gemDAO.getAllCategory();
     }
 
@@ -27,12 +31,12 @@ public class GemBOImpl implements GemBO {
     }
 
     @Override
-    public boolean saveGem(GemDTO gemDTO) throws SQLException {
-        return gemDAO.save(gemDTO);
+    public boolean saveGem(Gem gem) throws SQLException {
+        return gemDAO.save(gem);
     }
 
     @Override
-    public ArrayList<GemDTO> getAllGem() throws SQLException {
+    public ArrayList<Gem> getAllGem() throws SQLException {
         return gemDAO.getAll();
     }
 
@@ -42,8 +46,8 @@ public class GemBOImpl implements GemBO {
     }
 
     @Override
-    public boolean updateGem(GemDTO gemDTO) throws SQLException {
-        return gemDAO.update(gemDTO);
+    public boolean updateGem(Gem gem) throws SQLException {
+        return gemDAO.update(gem);
     }
 
     @Override
@@ -52,17 +56,17 @@ public class GemBOImpl implements GemBO {
     }
 
     @Override
-    public GemDTO findById(String selectedItemId) throws SQLException {
+    public Gem findById(String selectedItemId) throws SQLException {
         return gemDAO.findById(selectedItemId);
     }
 
     @Override
-    public boolean reduceQty(OrderDetailsDTO orderDetailsDTO) throws SQLException {
-        return gemDAO.reduceQty(orderDetailsDTO);
+    public boolean reduceQty(OrderDetails orderDetails) throws SQLException {
+        return gemDAO.reduceQty(orderDetails);
     }
 
     @Override
-    public boolean reduceeQty(SupplierOrderDetailsDTO supplierOrderDetailsDTO) throws SQLException {
-        return gemDAO.reduceeQty(supplierOrderDetailsDTO);
+    public boolean reduceeQty(SupplierOrderDetails supplierOrderDetails) throws SQLException {
+        return gemDAO.reduceeQty(supplierOrderDetails);
     }
 }

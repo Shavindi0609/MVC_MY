@@ -1,11 +1,11 @@
 package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.GemDAO;
-import com.ijse.gdse.finalproject.dto.Gem2DTO;
-import com.ijse.gdse.finalproject.dto.GemDTO;
-import com.ijse.gdse.finalproject.dto.OrderDetailsDTO;
-import com.ijse.gdse.finalproject.dto.SupplierOrderDetailsDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.Gem;
+import com.ijse.gdse.finalproject.entity.Gem2;
+import com.ijse.gdse.finalproject.entity.OrderDetails;
+import com.ijse.gdse.finalproject.entity.SupplierOrderDetails;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,18 +13,18 @@ import java.util.ArrayList;
 
 public class GemDAOImpl implements GemDAO {
 
-    public ArrayList<Gem2DTO> getAllCategory() throws SQLException {
+    public ArrayList<Gem2> getAllCategory() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from category");
 
-        ArrayList<Gem2DTO> Gem2DTOS = new ArrayList<>();
+        ArrayList<Gem2> Gem2DTOS = new ArrayList<>();
 
         while (rst.next()) {
-            Gem2DTO Gem2DTO = new Gem2DTO(
+            Gem2 Gem2 = new Gem2(
                     rst.getString(1),
                     rst.getString(2)
 
             );
-            Gem2DTOS.add(Gem2DTO);
+            Gem2DTOS.add(Gem2);
         }
         return Gem2DTOS;
     }
@@ -42,27 +42,27 @@ public class GemDAOImpl implements GemDAO {
         return "G001"; // Return the default customer ID if no data is found
     }
 
-    public boolean save(GemDTO gemDTO) throws SQLException {
+    public boolean save(Gem gem) throws SQLException {
         return SQLUtil.execute(
                 "INSERT INTO gem (gem_id, gem_name, gem_color, size, price, qty, is_certified,category_id) VALUES (?,?,?,?,?,?,?,?)",
-                gemDTO.getGem_id(),
-                gemDTO.getGem_name(),
-                gemDTO.getGem_color(),
-                gemDTO.getSize(),
-                gemDTO.getPrice(),
-                gemDTO.getQty(),
-                gemDTO.getIs_cetified(),
-                gemDTO.getCategory_id()
+                gem.getGem_id(),
+                gem.getGem_name(),
+                gem.getGem_color(),
+                gem.getSize(),
+                gem.getPrice(),
+                gem.getQty(),
+                gem.getIs_cetified(),
+                gem.getCategory_id()
         );
     }
 
-    public ArrayList<GemDTO> getAll() throws SQLException {
+    public ArrayList<Gem> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from gem");
 
-        ArrayList<GemDTO> gemDTOS = new ArrayList<>();
+        ArrayList<Gem> gemDTOS = new ArrayList<>();
 
         while (rst.next()) {
-            GemDTO gemDTO = new GemDTO(
+            Gem gem = new Gem(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -72,7 +72,7 @@ public class GemDAOImpl implements GemDAO {
                     rst.getBoolean(7),
                     rst.getString(8)
             );
-            gemDTOS.add(gemDTO);
+            gemDTOS.add(gem);
         }
         return gemDTOS;
     }
@@ -81,17 +81,17 @@ public class GemDAOImpl implements GemDAO {
         return SQLUtil.execute("delete from gem where gem_id=?", gemId);
     }
 
-    public boolean update(GemDTO gemDTO) throws SQLException {
+    public boolean update(Gem gem) throws SQLException {
         return SQLUtil.execute(
                 "update gem set gem_name=?, gem_color=?, size=?, price=?, qty=? , is_certified=? , category_id=? where gem_id=?",
-                gemDTO.getGem_name(),
-                gemDTO.getGem_color(),
-                gemDTO.getSize(),
-                gemDTO.getPrice(),
-                gemDTO.getQty(),
-                gemDTO.getIs_cetified(),
-                gemDTO.getCategory_id(),
-                gemDTO.getGem_id()
+                gem.getGem_name(),
+                gem.getGem_color(),
+                gem.getSize(),
+                gem.getPrice(),
+                gem.getQty(),
+                gem.getIs_cetified(),
+                gem.getCategory_id(),
+                gem.getGem_id()
         );
     }
 
@@ -104,10 +104,10 @@ public class GemDAOImpl implements GemDAO {
         return gemIds;
     }
 
-    public GemDTO findById(String selectedItemId) throws SQLException {
+    public Gem findById(String selectedItemId) throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from gem where gem_id=?", selectedItemId);
         if (rst.next()) {
-            return new GemDTO(
+            return new Gem(
                     rst.getString(1),
                     rst.getString(2),
                     rst.getString(3),
@@ -121,19 +121,19 @@ public class GemDAOImpl implements GemDAO {
         return null;
     }
 
-    public boolean reduceQty(OrderDetailsDTO orderDetailsDTO) throws SQLException {
+    public boolean reduceQty(OrderDetails orderDetails) throws SQLException {
         return SQLUtil.execute(
                 "update gem set qty = qty - ? where gem_id = ?",
-                orderDetailsDTO.getQuantity(),
-                orderDetailsDTO.getGemId()
+                orderDetails.getQuantity(),
+                orderDetails.getGemId()
         );
     }
 
-    public boolean reduceeQty(SupplierOrderDetailsDTO supplierOrderDetailsDTO) throws SQLException {
+    public boolean reduceeQty(SupplierOrderDetails supplierOrderDetails) throws SQLException {
         return SQLUtil.execute(
                 "update gem set qty = qty + ? where gem_id = ?",
-                supplierOrderDetailsDTO.getQuantity(),
-                supplierOrderDetailsDTO.getGemId()
+                supplierOrderDetails.getQuantity(),
+                supplierOrderDetails.getGemId()
         );
     }
 }

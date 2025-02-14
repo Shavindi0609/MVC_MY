@@ -3,11 +3,8 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.SupplierBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
-import com.ijse.gdse.finalproject.dto.SupplierDTO;
 import com.ijse.gdse.finalproject.dto.tm.SupplierTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.SupplierDAOImpl;
+import com.ijse.gdse.finalproject.entity.Supplier;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -108,18 +105,18 @@ public class SupplierController implements Initializable {
 
 
     private void loadSupplierTableData() throws SQLException {
-        ArrayList<SupplierDTO> supplierDTOS = supplierBO.getAllSupplier();
+        ArrayList<Supplier> supplierDTOS = supplierBO.getAllSupplier();
 
         ObservableList<SupplierTM> supplierTMS = FXCollections.observableArrayList();
 
-        for (SupplierDTO supplierDTO : supplierDTOS) {
+        for (Supplier supplier : supplierDTOS) {
             SupplierTM supplierTM = new SupplierTM(
-                    supplierDTO.getSupplierId(),
-                    supplierDTO.getName(),
-                    supplierDTO.getNic(),
-                    supplierDTO.getEmail(),
-                    supplierDTO.getPhone(),
-                    supplierDTO.getAddress()
+                    supplier.getSupplierId(),
+                    supplier.getName(),
+                    supplier.getNic(),
+                    supplier.getEmail(),
+                    supplier.getPhone(),
+                    supplier.getAddress()
             );
             supplierTMS.add(supplierTM);
         }
@@ -187,7 +184,7 @@ public class SupplierController implements Initializable {
 
 
         if (isValidName && isValidNic && isValidEmail && isValidPhone && isValidAddress) {
-           SupplierDTO supplierDTO = new SupplierDTO(
+           Supplier supplier = new Supplier(
                     supplierId,
                     name,
                     nic,
@@ -196,7 +193,7 @@ public class SupplierController implements Initializable {
                     address
             );
 
-            boolean isSaved = supplierBO.saveSupplier(supplierDTO);
+            boolean isSaved = supplierBO.saveSupplier(supplier);
             if (isSaved) {
                 refreshPage();
                 updateSupplierCount();
@@ -279,7 +276,7 @@ public class SupplierController implements Initializable {
 
 
         if (isValidName && isValidNic && isValidEmail && isValidPhone && isValidAddress) {
-            SupplierDTO supplierDTO = new SupplierDTO(
+            Supplier supplier = new Supplier(
                     supplierId,
                     name,
                     nic,
@@ -288,7 +285,7 @@ public class SupplierController implements Initializable {
                     address
             );
 
-            boolean isSaved = supplierBO.updateSupplier(supplierDTO);
+            boolean isSaved = supplierBO.updateSupplier(supplier);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Supplier updated...!").show();

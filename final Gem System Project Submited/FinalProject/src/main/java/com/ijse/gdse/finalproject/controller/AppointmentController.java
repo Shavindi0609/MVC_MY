@@ -2,12 +2,8 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.AppointmentBO;
-import com.ijse.gdse.finalproject.bo.custom.CustomerBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.AppointmentDAO;
-import com.ijse.gdse.finalproject.dto.AppointmentDTO;
 import com.ijse.gdse.finalproject.dto.tm.AppointmentTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.AppointmentDAOImpl;
+import com.ijse.gdse.finalproject.entity.Appointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -86,7 +82,7 @@ public class AppointmentController implements Initializable {
         try {
             // Check if there are appointments for today
             LocalDate today = LocalDate.now();
-            ArrayList<AppointmentDTO> appointments = appointmentBO.getAllAppointment();
+            ArrayList<Appointment> appointments = appointmentBO.getAllAppointment();
             boolean hasAppointmentToday = appointments.stream()
                     .anyMatch(appointment -> appointment.getDate().equals(today));
 
@@ -127,17 +123,17 @@ public class AppointmentController implements Initializable {
 
 
     private void loadAppointmentTableData() throws SQLException {
-        ArrayList<AppointmentDTO> appointmentDTOS = appointmentBO.getAllAppointment();
+        ArrayList<Appointment> appointmentDTOS = appointmentBO.getAllAppointment();
 
         ObservableList<AppointmentTM> appointmentTMS = FXCollections.observableArrayList();
 
-        for (AppointmentDTO appointmentDTO : appointmentDTOS) {
+        for (Appointment appointment : appointmentDTOS) {
             AppointmentTM appointmentTM = new AppointmentTM(
-                    appointmentDTO.getAppointmentId(),
-                    appointmentDTO.getCustomerId(),
-                    appointmentDTO.getDate(),
-                    appointmentDTO.getTime(),
-                    appointmentDTO.getIsAttendance()
+                    appointment.getAppointmentId(),
+                    appointment.getCustomerId(),
+                    appointment.getDate(),
+                    appointment.getTime(),
+                    appointment.getIsAttendance()
             );
             appointmentTMS.add(appointmentTM);
         }
@@ -190,7 +186,7 @@ public class AppointmentController implements Initializable {
             LocalTime time = LocalTime.parse(timeText);
             Boolean is_attendance = Boolean.valueOf(isAttendanceText);
 
-            AppointmentDTO appointmentDTO = new AppointmentDTO(
+            Appointment appointment = new Appointment(
                     appointmentId,
                     customerId,
                     date,
@@ -199,7 +195,7 @@ public class AppointmentController implements Initializable {
 
             );
 
-            boolean isSaved = appointmentBO.saveAppointment(appointmentDTO);
+            boolean isSaved = appointmentBO.saveAppointment(appointment);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Appointment added...!").show();
@@ -273,7 +269,7 @@ public class AppointmentController implements Initializable {
             LocalTime time = LocalTime.parse(timeText);
             Boolean is_attendance = Boolean.valueOf(isAttendanceText);
 
-            AppointmentDTO appointmentDTO = new AppointmentDTO(
+            Appointment appointment = new Appointment(
                     appointmentId,
                     customerId,
                     date,
@@ -282,7 +278,7 @@ public class AppointmentController implements Initializable {
 
             );
 
-            boolean isSaved = appointmentBO.updateAppointment(appointmentDTO);
+            boolean isSaved = appointmentBO.updateAppointment(appointment);
             if (isSaved) {
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Appointment updated...!").show();

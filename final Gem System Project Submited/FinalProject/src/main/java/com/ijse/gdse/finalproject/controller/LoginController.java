@@ -2,10 +2,7 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.LoginBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.LoginDAO;
-import com.ijse.gdse.finalproject.dto.LoginDTO;
-import com.ijse.gdse.finalproject.dao.custom.impl.LoginDAOImpl;
+import com.ijse.gdse.finalproject.entity.Login;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -37,13 +34,13 @@ public class LoginController {
         // If both fields are non-empty, try logging in
         if (!txtUserName.getText().isEmpty() && !txtPassword.getText().isEmpty()) {
             try {
-                ArrayList<LoginDTO> loginDTOS = loginBO.getAllIdAndPassword();
+                ArrayList<Login> loginDTOS = loginBO.getAllIdAndPassword();
 
-                for (LoginDTO loginDTO : loginDTOS) {
+                for (Login login : loginDTOS) {
                     // Check if credentials are correct
-                    if (loginDTO.getUsername().equals(txtUserName.getText()) &&
-                            loginDTO.getPassword().equals(txtPassword.getText())) {
-                        goToMainpage(loginDTO.getUsername());  // Go to main page
+                    if (login.getUsername().equals(txtUserName.getText()) &&
+                            login.getPassword().equals(txtPassword.getText())) {
+                        goToMainpage(login.getUsername());  // Go to main page
                         return;  // Exit once correct credentials are found
                     }
                 }

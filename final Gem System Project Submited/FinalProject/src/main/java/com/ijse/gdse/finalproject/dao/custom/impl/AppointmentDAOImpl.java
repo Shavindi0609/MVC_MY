@@ -1,8 +1,8 @@
 package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.AppointmentDAO;
-import com.ijse.gdse.finalproject.dto.AppointmentDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.Appointment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,20 +10,20 @@ import java.util.ArrayList;
 
 public class AppointmentDAOImpl implements AppointmentDAO {
 
-    public ArrayList<AppointmentDTO> getAll() throws SQLException {
+    public ArrayList<Appointment> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("SELECT * FROM appointment");
 
-        ArrayList<AppointmentDTO> appointmentDTOS = new ArrayList<>();
+        ArrayList<Appointment> appointmentDTOS = new ArrayList<>();
 
         while (rst.next()){
-            AppointmentDTO appointmentDTO = new AppointmentDTO(
+            Appointment appointment = new Appointment(
                     rst.getString(1),  // Customer ID
                     rst.getString(2),  // Name
                     rst.getDate(3).toLocalDate(),  // NIC
                     rst.getTime(4).toLocalTime(),  // Email
                     rst.getBoolean(5)//address
             );
-            appointmentDTOS.add(appointmentDTO);
+            appointmentDTOS.add(appointment);
         }
         return appointmentDTOS;
     }
@@ -41,14 +41,14 @@ public class AppointmentDAOImpl implements AppointmentDAO {
         return "APP001";
     }
 
-    public boolean save(AppointmentDTO appointmentDTO) throws SQLException {
+    public boolean save(Appointment appointment) throws SQLException {
         return SQLUtil.execute(
                 "insert into appointment(appointment_id , customer_id , date , time , is_attendance ) values (?,?,?,?,?)",
-                appointmentDTO.getAppointmentId(),
-                appointmentDTO.getCustomerId(),
-                appointmentDTO.getDate(),
-                appointmentDTO.getTime(),
-                appointmentDTO.getIsAttendance()
+                appointment.getAppointmentId(),
+                appointment.getCustomerId(),
+                appointment.getDate(),
+                appointment.getTime(),
+                appointment.getIsAttendance()
 
         );
     }
@@ -57,14 +57,14 @@ public class AppointmentDAOImpl implements AppointmentDAO {
         return SQLUtil.execute("delete from appointment where appointment_id=?" , appointmentId);
     }
 
-    public boolean update(AppointmentDTO appointmentDTO) throws SQLException {
+    public boolean update(Appointment appointment) throws SQLException {
         return SQLUtil.execute(
                 "UPDATE appointment SET customer_id=?, date=?, time=?, is_attendance=? WHERE appointment_id=?",
-                appointmentDTO.getCustomerId(),   // 1st ?
-                appointmentDTO.getDate(),         // 2nd ?
-                appointmentDTO.getTime(),         // 3rd ?
-                appointmentDTO.getIsAttendance(), // 4th ?
-                appointmentDTO.getAppointmentId() // 5th ? (for WHERE clause)
+                appointment.getCustomerId(),   // 1st ?
+                appointment.getDate(),         // 2nd ?
+                appointment.getTime(),         // 3rd ?
+                appointment.getIsAttendance(), // 4th ?
+                appointment.getAppointmentId() // 5th ? (for WHERE clause)
         );
 
     }

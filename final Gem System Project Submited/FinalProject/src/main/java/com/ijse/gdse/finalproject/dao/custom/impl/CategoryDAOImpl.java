@@ -1,8 +1,8 @@
 package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.CategoryDAO;
-import com.ijse.gdse.finalproject.dto.CategoryDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.Category;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,26 +25,26 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     }
 
-    public ArrayList<CategoryDTO> getAll() throws SQLException {
+    public ArrayList<Category> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from category");
 
-        ArrayList<CategoryDTO> categoryDTOS = new ArrayList<>();
+        ArrayList<Category> categoryDTOS = new ArrayList<>();
 
         while (rst.next()) {
-            CategoryDTO categoryDTO = new CategoryDTO(
+            Category category = new Category(
                     rst.getString(1),  // Customer ID
                     rst.getString(2)  // Name
             );
-            categoryDTOS.add(categoryDTO);
+            categoryDTOS.add(category);
         }
         return categoryDTOS;
     }
 
-    public boolean save(CategoryDTO categoryDTO) throws SQLException {
+    public boolean save(Category category) throws SQLException {
         return SQLUtil.execute(
                 "insert into category(category_id , category_name) values (?,?)",
-                categoryDTO.getCategoryId(),
-                categoryDTO.getCategoryName()
+                category.getCategoryId(),
+                category.getCategoryName()
 
         );
     }
@@ -53,11 +53,11 @@ public class CategoryDAOImpl implements CategoryDAO {
         return SQLUtil.execute("delete from category where category_id=?", categoryId);
     }
 
-    public boolean update(CategoryDTO categoryDTO) throws SQLException {
+    public boolean update(Category category) throws SQLException {
         return SQLUtil.execute(
                 "update category set  category_name=? where category_id=?",
-                categoryDTO.getCategoryName(),
-                categoryDTO.getCategoryId()
+                category.getCategoryName(),
+                category.getCategoryId()
         );
     }
 }

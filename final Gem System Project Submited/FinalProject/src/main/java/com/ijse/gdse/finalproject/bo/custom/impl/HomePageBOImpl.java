@@ -6,7 +6,7 @@ import com.ijse.gdse.finalproject.dao.custom.AppointmentDAO;
 import com.ijse.gdse.finalproject.dao.custom.CustomerDAO;
 import com.ijse.gdse.finalproject.dao.custom.EmployeeDAO;
 import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
-import com.ijse.gdse.finalproject.dto.AppointmentDTO;
+import com.ijse.gdse.finalproject.entity.Appointment;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class HomePageBOImpl implements HomePageBO {
     }
 
     @Override
-    public ArrayList<AppointmentDTO> getAllAppointment() throws SQLException {
+    public ArrayList<Appointment> getAllAppointment() throws SQLException {
         return appointmentDAO.getAll();
     }
 

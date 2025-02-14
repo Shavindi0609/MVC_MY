@@ -3,7 +3,7 @@ package com.ijse.gdse.finalproject.bo.custom.impl;
 import com.ijse.gdse.finalproject.bo.custom.SupplierBO;
 import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dao.custom.SupplierDAO;
-import com.ijse.gdse.finalproject.dto.SupplierDTO;
+import com.ijse.gdse.finalproject.entity.Supplier;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class SupplierBOImpl implements SupplierBO {
     SupplierDAO supplierDAO = (SupplierDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SUPPLIER);
 
     @Override
-    public ArrayList<SupplierDTO> getAllSupplier() throws SQLException {
+    public ArrayList<Supplier> getAllSupplier() throws SQLException {
         return supplierDAO.getAll();
     }
 
@@ -23,13 +23,13 @@ public class SupplierBOImpl implements SupplierBO {
     }
 
     @Override
-    public boolean saveSupplier(SupplierDTO supplierDTO) throws SQLException {
-        return supplierDAO.save(supplierDTO);
+    public boolean saveSupplier(Supplier supplier) throws SQLException {
+        return supplierDAO.save(supplier);
     }
 
     @Override
-    public boolean updateSupplier(SupplierDTO supplierDTO) throws SQLException {
-        return supplierDAO.update(supplierDTO);
+    public boolean updateSupplier(Supplier supplier) throws SQLException {
+        return supplierDAO.update(supplier);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SupplierBOImpl implements SupplierBO {
     }
 
     @Override
-    public SupplierDTO findById(String selectedSupplierId) throws SQLException {
+    public Supplier findById(String selectedSupplierId) throws SQLException {
         return supplierDAO.findById(selectedSupplierId);
     }
 

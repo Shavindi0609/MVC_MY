@@ -3,7 +3,8 @@ package com.ijse.gdse.finalproject.bo.custom.impl;
 import com.ijse.gdse.finalproject.bo.custom.CategoryBO;
 import com.ijse.gdse.finalproject.dao.DAOFactory;
 import com.ijse.gdse.finalproject.dao.custom.CategoryDAO;
-import com.ijse.gdse.finalproject.dto.CategoryDTO;
+import com.ijse.gdse.finalproject.entity.Category;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ public class CategoryBOImpl implements CategoryBO {
     }
 
     @Override
-    public ArrayList<CategoryDTO> getAllCategory() throws SQLException {
+    public ArrayList<Category> getAllCategory() throws SQLException {
         return categoryDAO.getAll();
     }
 
     @Override
-    public boolean saveCategory(CategoryDTO categoryDTO) throws SQLException {
-        return categoryDAO.save(categoryDTO);
+    public boolean saveCategory(Category category) throws SQLException {
+        return categoryDAO.save(category);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class CategoryBOImpl implements CategoryBO {
     }
 
     @Override
-    public boolean updateCategory(CategoryDTO categoryDTO) throws SQLException {
-        return categoryDAO.update(categoryDTO);
+    public boolean updateCategory(Category category) throws SQLException {
+        return categoryDAO.update(category);
     }
 }

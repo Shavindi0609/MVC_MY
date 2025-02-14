@@ -2,14 +2,8 @@ package com.ijse.gdse.finalproject.controller;
 
 import com.ijse.gdse.finalproject.bo.BOFactory;
 import com.ijse.gdse.finalproject.bo.custom.EmployeeBO;
-import com.ijse.gdse.finalproject.bo.custom.UserBO;
-import com.ijse.gdse.finalproject.dao.DAOFactory;
-import com.ijse.gdse.finalproject.dao.custom.EmployeeDAO;
-import com.ijse.gdse.finalproject.dao.custom.UserDAO;
-import com.ijse.gdse.finalproject.dto.EmployeeDTO;
 import com.ijse.gdse.finalproject.dto.tm.EmployeeTM;
-import com.ijse.gdse.finalproject.dao.custom.impl.EmployeeDAOImpl;
-import com.ijse.gdse.finalproject.dao.custom.impl.UserDAOImpl;
+import com.ijse.gdse.finalproject.entity.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,7 +35,7 @@ public class EmployeeController implements Initializable {
     @FXML
     private TableView<EmployeeTM> tblEmployee;
 
-    UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
+
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getInstance().getBO(BOFactory.BOType.EMPLOYEE);
 
     @Override
@@ -80,23 +74,23 @@ public class EmployeeController implements Initializable {
     }
 
     private void loadUserIds() throws SQLException {
-        ArrayList<String> userIds = userBO.getAllUserIds();
+        ArrayList<String> userIds = employeeBO.getAllUserIds();
         cmbUserId.setItems(FXCollections.observableArrayList(userIds));
     }
 
     private void loadEmployeeTableData() throws SQLException {
-        ArrayList<EmployeeDTO> employeeDTOS = employeeBO.getAllEmployee();
+        ArrayList<Employee> employeeDTOS = employeeBO.getAllEmployee();
         ObservableList<EmployeeTM> employeeTMS = FXCollections.observableArrayList();
 
-        for (EmployeeDTO employeeDTO : employeeDTOS) {
+        for (Employee employee : employeeDTOS) {
             EmployeeTM employeeTM = new EmployeeTM(
-                    employeeDTO.getEmployeeId(),
-                    employeeDTO.getName(),
-                    employeeDTO.getNic(),
-                    employeeDTO.getEmail(),
-                    employeeDTO.getPhone(),
-                    employeeDTO.getAddress(),
-                    employeeDTO.getUserId()
+                    employee.getEmployeeId(),
+                    employee.getName(),
+                    employee.getNic(),
+                    employee.getEmail(),
+                    employee.getPhone(),
+                    employee.getAddress(),
+                    employee.getUserId()
             );
             employeeTMS.add(employeeTM);
         }
@@ -123,7 +117,7 @@ public class EmployeeController implements Initializable {
         String employeeId = lblEmployeeId.getText();
         String selectedUserId = cmbUserId.getValue();
 
-        EmployeeDTO employeeDTO = new EmployeeDTO(
+        Employee employee = new Employee(
                 employeeId,
                 txtName.getText(),
                 txtNic.getText(),
@@ -133,7 +127,7 @@ public class EmployeeController implements Initializable {
                 selectedUserId
         );
 
-        boolean isSaved = employeeBO.saveEmployee(employeeDTO);
+        boolean isSaved = employeeBO.saveEmployee(employee);
         if (isSaved) {
             refreshPage();
             new Alert(Alert.AlertType.INFORMATION, "Employee saved successfully!").show();
@@ -148,7 +142,7 @@ public class EmployeeController implements Initializable {
         String employeeId = lblEmployeeId.getText();
         String selectedUserId = cmbUserId.getValue();
 
-        EmployeeDTO employeeDTO = new EmployeeDTO(
+        Employee employee = new Employee(
                 employeeId,
                 txtName.getText(),
                 txtNic.getText(),
@@ -158,7 +152,7 @@ public class EmployeeController implements Initializable {
                 selectedUserId
         );
 
-        boolean isUpdated = employeeBO.updateEmployee(employeeDTO);
+        boolean isUpdated = employeeBO.updateEmployee(employee);
         if (isUpdated) {
             refreshPage();
             new Alert(Alert.AlertType.INFORMATION, "Employee updated successfully!").show();

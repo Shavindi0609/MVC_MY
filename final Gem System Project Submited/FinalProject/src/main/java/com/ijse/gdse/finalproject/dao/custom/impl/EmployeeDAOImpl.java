@@ -2,8 +2,8 @@ package com.ijse.gdse.finalproject.dao.custom.impl;
 
 import com.ijse.gdse.finalproject.dao.custom.EmployeeDAO;
 import com.ijse.gdse.finalproject.db.DBConnection;
-import com.ijse.gdse.finalproject.dto.EmployeeDTO;
 import com.ijse.gdse.finalproject.dao.SQLUtil;
+import com.ijse.gdse.finalproject.entity.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,26 +28,26 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return "E001";
     }
 
-    public boolean save(EmployeeDTO employeeDTO) throws SQLException {
+    public boolean save(Employee employee) throws SQLException {
         return SQLUtil.execute(
                 "insert into employee(employee_id , name , nic , email , phone , address,user_id) values (?,?,?,?,?,?,?)",
-                employeeDTO.getEmployeeId(),
-                employeeDTO.getName(),
-                employeeDTO.getNic(),
-                employeeDTO.getEmail(),
-                employeeDTO.getPhone(),
-                employeeDTO.getAddress(),
-                employeeDTO.getUserId()
+                employee.getEmployeeId(),
+                employee.getName(),
+                employee.getNic(),
+                employee.getEmail(),
+                employee.getPhone(),
+                employee.getAddress(),
+                employee.getUserId()
         );
     }
 
-    public ArrayList<EmployeeDTO> getAll() throws SQLException {
+    public ArrayList<Employee> getAll() throws SQLException {
         ResultSet rst = SQLUtil.execute("select * from employee");
 
-        ArrayList<EmployeeDTO> employeeDTOS = new ArrayList<>();
+        ArrayList<Employee> employeeDTOS = new ArrayList<>();
 
         while (rst.next()){
-            EmployeeDTO employeeDTO = new EmployeeDTO(
+            Employee employee = new Employee(
                     rst.getString(1),  // Customer ID
                     rst.getString(2),  // Name
                     rst.getString(3),  // NIC
@@ -57,7 +57,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                     rst.getString(7)
                     //address
             );
-            employeeDTOS.add(employeeDTO);
+            employeeDTOS.add(employee);
         }
         return employeeDTOS;
     }
@@ -66,16 +66,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return SQLUtil.execute("delete from employee where employee_id=?" , employeeId);
     }
 
-    public boolean update(EmployeeDTO employeeDTO) throws SQLException {
+    public boolean update(Employee employee) throws SQLException {
         return SQLUtil.execute(
                 "update employee set name=?, nic=?, email=?, phone=?, address=? , user_id=? where employee_id=?",
-                employeeDTO.getName(),
-                employeeDTO.getNic(),
-                employeeDTO.getEmail(),
-                employeeDTO.getPhone(),
-                employeeDTO.getAddress(),
-                employeeDTO.getUserId(),
-                employeeDTO.getEmployeeId()
+                employee.getName(),
+                employee.getNic(),
+                employee.getEmail(),
+                employee.getPhone(),
+                employee.getAddress(),
+                employee.getUserId(),
+                employee.getEmployeeId()
         );
     }
 
